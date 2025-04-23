@@ -45,7 +45,13 @@ Rails.application.routes.draw do
   
     resources :players
     
-    resources :matches
+    resources :matches do
+      member do
+        get :teams
+        post :start
+      end
+      resources :results, only: [:new, :create]
+    end
     
     resources :results
 end

@@ -1,18 +1,43 @@
 <div id="<%= dom_id match %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">First team:</strong>
-    <%= match.first_team_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Second team:</strong>
-    <%= match.second_team_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Date:</strong>
-    <%= match.date %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Status:</strong>
-    <%= match.status %>
-  </div>
+    <div>
+        <strong class="block font-medium mb-1">First team:</strong>
+        <%= match.first_team.name %>
+    </div>
+    <div>
+        <strong class="block font-medium mb-1">Second team:</strong>
+        <%= match.second_team.name %>
+    </div>
+    <div>
+        <strong class="block font-medium mb-1">Date:</strong>
+        <% if match.date.present? %>
+        Programmé le <%= match.date.strftime("%d/%m/%Y à %H:%M") %>
+        <% elsif match.teams_are_valid? %>
+        <span class="text-yellow-600">Équipes valides, veuillez programmer le match</span>
+        <% else %>
+        <span class="text-red-600">Équipes non valides, match non programmé</span>
+        <% end %>
+    </div>
+    <div>
+        <strong class="block font-medium mb-1">Status:</strong>
+        <% case match.status %>
+        <% when 'upcoming' %>
+        À venir
+        <% when 'in_progress' %>
+        En cours
+        <% when 'completed' %>
+        Terminé
+        <% when 'cancelled' %>
+        Annulé
+        <% end %>
+    </div>
+    <% if match.can_start? %>
+    <div>
+        <%= button_to "Commencer le match", start_match_path(match), method: :post, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+    </div>
+    <% end %>
+    <% if match.in_progress? %>
+    <div>
+        <%= link_to "Finir le match", new_match_result_path(match), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium" %>
+    </div>
+    <% end %>
 </div>

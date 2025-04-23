@@ -1,32 +1,34 @@
-<%= form_with(model: result, class: "contents") do |form| %>
-  <% if result.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(result.errors.count, "error") %> prohibited this result from being saved:</h2>
+<%= form_with(model: result.persisted? ? result : [@match, result], class: "contents") do |form| %>
+<% if result.errors.any? %>
+<div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+    <h2><%= pluralize(result.errors.count, "error") %> prohibited this result from being saved:</h2>
 
-      <ul class="list-disc ml-6">
+    <ul class="list-disc ml-6">
         <% result.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <li><%= error.full_message %></li>
         <% end %>
-      </ul>
+    </ul>
+</div>
+<% end %>
+
+<div class="my-5">
+    <div class="mb-4">
+        <strong class="block font-medium mb-1">Match:</strong>
+        <%= @match.first_team.name %> vs <%= @match.second_team.name %>
     </div>
-  <% end %>
+</div>
 
-  <div class="my-5">
-    <%= form.label :match_id %>
-    <%= form.text_field :match_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": result.errors[:match_id].none?, "border-red-400 focus:outline-red-600": result.errors[:match_id].any?}] %>
-  </div>
+<div class="my-5">
+    <%= form.label :first_team_score, "#{@match.first_team.name} - Score" %>
+    <%= form.number_field :first_team_score, class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full" %>
+</div>
 
-  <div class="my-5">
-    <%= form.label :first_team_score %>
-    <%= form.number_field :first_team_score, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": result.errors[:first_team_score].none?, "border-red-400 focus:outline-red-600": result.errors[:first_team_score].any?}] %>
-  </div>
+<div class="my-5">
+    <%= form.label :second_team_score, "#{@match.second_team.name} - Score" %>
+    <%= form.number_field :second_team_score, class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full" %>
+</div>
 
-  <div class="my-5">
-    <%= form.label :second_team_score %>
-    <%= form.number_field :second_team_score, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": result.errors[:second_team_score].none?, "border-red-400 focus:outline-red-600": result.errors[:second_team_score].any?}] %>
-  </div>
-
-  <div class="inline">
+<div class="inline">
     <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-  </div>
+</div>
 <% end %>

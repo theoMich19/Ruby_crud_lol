@@ -1,37 +1,58 @@
-<%= form_with(model: match, class: "contents") do |form| %>
-  <% if match.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(match.errors.count, "error") %> prohibited this match from being saved:</h2>
+<%= form_with(model: match, class: "contents", data: { controller: "match-form" }) do |form| %>
+<% if match.errors.any? %>
+<div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+    <h2><%= pluralize(match.errors.count, "error") %> prohibited this match from being saved:</h2>
 
-      <ul class="list-disc ml-6">
+    <ul class="list-disc ml-6">
         <% match.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <li><%= error.full_message %></li>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
+    </ul>
+</div>
+<% end %>
 
-  <div class="my-5">
-    <%= form.label :first_team_id %>
-    <%= form.text_field :first_team_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:first_team_id].none?, "border-red-400 focus:outline-red-600": match.errors[:first_team_id].any?}] %>
-  </div>
+<div class="my-5">
+    <%= form.label :first_team_id, "Première équipe" %>
+    <%= form.collection_select :first_team_id, 
+        Team.all, 
+        :id, 
+        ->(team) { "#{team.name} (#{team.players.count} joueur(s))" },
+        { include_blank: 'Sélectionner une équipe' }, 
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:first_team_id].none?, "border-red-400 focus:outline-red-600": match.errors[:first_team_id].any?}],
+        data: { 
+          "match-form-target": "firstTeam", 
+          action: "change->match-form#updateDateFieldState",
+          players: Team.all.map { |t| [t.id, t.players.count] }.to_h.to_json
+        } %>
+</div>
 
-  <div class="my-5">
-    <%= form.label :second_team_id %>
-    <%= form.text_field :second_team_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:second_team_id].none?, "border-red-400 focus:outline-red-600": match.errors[:second_team_id].any?}] %>
-  </div>
+<div class="my-5">
+    <%= form.label :second_team_id, "Deuxième équipe" %>
+    <%= form.collection_select :second_team_id, 
+        Team.all, 
+        :id, 
+        ->(team) { "#{team.name} (#{team.players.count} joueur(s))" },
+        { include_blank: 'Sélectionner une équipe' }, 
+        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:second_team_id].none?, "border-red-400 focus:outline-red-600": match.errors[:second_team_id].any?}],
+        data: { 
+          "match-form-target": "secondTeam", 
+          action: "change->match-form#updateDateFieldState",
+          players: Team.all.map { |t| [t.id, t.players.count] }.to_h.to_json
+        } %>
+</div>
 
-  <div class="my-5">
+<div class="my-5">
     <%= form.label :date %>
-    <%= form.datetime_field :date, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:date].none?, "border-red-400 focus:outline-red-600": match.errors[:date].any?}] %>
-  </div>
+    <div data-match-form-target="dateMessage" class="bg-yellow-50 text-yellow-700 p-3 rounded-md">
+        Veuillez d'abord sélectionner deux équipes différentes valides (avec au moins un joueur chacune) pour pouvoir programmer le match.
+    </div>
+    <div data-match-form-target="dateFieldContainer" class="hidden">
+        <%= form.datetime_field :date, 
+            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:date].none?, "border-red-400 focus:outline-red-600": match.errors[:date].any?}] %>
+    </div>
+</div>
 
-  <div class="my-5">
-    <%= form.label :status %>
-    <%= form.number_field :status, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:status].none?, "border-red-400 focus:outline-red-600": match.errors[:status].any?}] %>
-  </div>
-
-  <div class="inline">
+<div class="inline">
     <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-  </div>
+</div>
 <% end %>

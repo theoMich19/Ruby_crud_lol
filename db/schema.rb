@@ -26,7 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_23_101057) do
     t.string "last_name"
     t.string "first_name"
     t.string "role"
-    t.integer "team_id", null: false
+    t.integer "team_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_players_on_team_id"

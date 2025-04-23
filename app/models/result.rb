@@ -11,4 +11,8 @@ class Result < ApplicationRecord
       nil # Match nul
     end
   end
+
+  validates :match, presence: true
+  validates :first_team_score, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :second_team_score, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 end
