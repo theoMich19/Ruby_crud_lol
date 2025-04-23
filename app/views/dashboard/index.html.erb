@@ -1,0 +1,218 @@
+<!-- En-tête -->
+<div class="lol-container p-6 mb-8">
+  <h1 class="text-3xl font-bold text-center">TOURNOI LEAGUE OF LEGENDS</h1>
+  <p class="text-center text-xl mt-2 text-gray-300">Saison 2025</p>
+</div>
+
+<!-- Dashboard principaux blocs -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+  <!-- Derniers Résultats -->
+  <div class="lol-container">
+    <div class="lol-header p-3">
+      <h2 class="text-xl font-semibold text-center">Derniers Résultats</h2>
+    </div>
+    <div class="p-4">
+      <% if @recent_matches.present? && @recent_matches.any? { |m| m.result.present? } %>
+        <div class="space-y-4">
+          <% @recent_matches.select { |m| m.result.present? }.take(4).each do |match| %>
+            <div class="border-b border-gray-700 pb-3 last:border-0">
+              <div class="flex justify-between items-center mb-1">
+                <div class="font-bold text-lg"><%= match.first_team.name %></div>
+                <div class="flex items-center">
+                  <span class="text-xl font-bold mx-2">
+                    <%= match.result.first_team_score %>
+                  </span>
+                  <span class="text-xl">-</span>
+                  <span class="text-xl font-bold mx-2">
+                    <%= match.result.second_team_score %>
+                  </span>
+                </div>
+                <div class="font-bold text-lg"><%= match.second_team.name %></div>
+              </div>
+              <div class="text-center text-sm text-gray-400">
+                <%= match.date.strftime("%d %b %Y") %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-center text-gray-400 py-4">Aucun résultat disponible</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Classement -->
+  <div class="lol-container">
+    <div class="lol-header p-3">
+      <h2 class="text-xl font-semibold text-center">Classement</h2>
+    </div>
+    <div class="p-4">
+      <table class="lol-table w-full">
+        <thead>
+          <tr>
+            <th class="p-2">Rang</th>
+            <th class="p-2 text-left">Équipe</th>
+            <th class="p-2">V</th>
+            <th class="p-2">D</th>
+            <th class="p-2">Pts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% 
+            # Logique simplifiée pour le classement
+            teams = Team.all
+            # Triez-les par nombre de victoires (dans un vrai scénario, vous utiliseriez une requête SQL plus complexe)
+            teams_ranking = teams.sort_by do |team|
+              wins = Result.joins(:match)
+                     .where("(matches.first_team_id = ? AND first_team_score > second_team_score) OR (matches.second_team_id = ? AND second_team_score > first_team_score)", 
+                            team.id, team.id)
+                     .count
+              -wins # pour trier par ordre décroissant
+            end
+          %>
+          
+          <% teams_ranking.each_with_index do |team, index| %>
+            <% 
+              # Calcul des statistiques pour chaque équipe
+              wins = Result.joins(:match)
+                    .where("(matches.first_team_id = ? AND first_team_score > second_team_score) OR (matches.second_team_id = ? AND second_team_score > first_team_score)", 
+                           team.id, team.id)
+                    .count
+              
+              losses = Result.joins(:match)
+                      .where("(matches.first_team_id = ? AND first_team_score < second_team_score) OR (matches.second_team_id = ? AND second_team_score < first_team_score)", 
+                             team.id, team.id)
+                      .count
+              
+              points = wins * 3
+            %>
+            <tr class="<%= index % 2 == 0 ? 'bg-black bg-opacity-20' : '' %>">
+              <td class="p-2 text-center"><%= index + 1 %></td>
+              <td class="p-2 font-medium"><%= team.name %></td>
+              <td class="p-2 text-center"><%= wins %></td>
+              <td class="p-2 text-center"><%= losses %></td>
+              <td class="p-2 text-center font-bold"><%= points %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Matchs à Venir -->
+  <div class="lol-container">
+    <div class="lol-header p-3">
+      <h2 class="text-xl font-semibold text-center">Matchs à Venir</h2>
+    </div>
+    <div class="p-4">
+      <% 
+        # Récupération des matchs à venir (date >= aujourd'hui)
+        upcoming_matches = Match.where("date >= ?", Date.today)
+                                .order(date: :asc)
+                                .limit(4)
+      %>
+      
+      <% if upcoming_matches.present? %>
+        <div class="space-y-4">
+          <% upcoming_matches.each do |match| %>
+            <div class="border-b border-gray-700 pb-3 last:border-0">
+              <div class="flex justify-between items-center mb-1">
+                <div class="font-bold text-lg"><%= match.first_team.name %></div>
+                <div class="text-sm text-gray-400">VS</div>
+                <div class="font-bold text-lg"><%= match.second_team.name %></div>
+              </div>
+              <div class="text-center text-amber-500 font-medium">
+                <%= match.date.strftime("%d %b %Y") %> - <%= match.date.strftime("%H:%M") %>
+              </div>
+              <div class="mt-2 text-center">
+                <%= link_to "Modifier", edit_match_path(match), class: "lol-btn text-xs py-1 px-3 inline-block" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-center text-gray-400 py-4">Aucun match programmé</p>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Raccourcis pour les actions principales -->
+<div class="lol-container p-4 mb-6">
+  <h3 class="text-xl font-semibold text-center mb-4">Actions rapides</h3>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <%= link_to new_team_path, class: "lol-btn lol-btn-primary block text-center py-3" do %>
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        <span>Nouvelle Équipe</span>
+      </div>
+    <% end %>
+    
+    <%= link_to new_player_path, class: "lol-btn lol-btn-primary block text-center py-3" do %>
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+        </svg>
+        <span>Nouveau Joueur</span>
+      </div>
+    <% end %>
+    
+    <%= link_to new_match_path, class: "lol-btn lol-btn-primary block text-center py-3" do %>
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Nouveau Match</span>
+      </div>
+    <% end %>
+    
+    <%= link_to new_result_path, class: "lol-btn lol-btn-primary block text-center py-3" do %>
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mx-auto mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+        <span>Enregistrer Résultat</span>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Liste des équipes avec joueurs -->
+<div class="lol-container mb-6">
+  <div class="lol-header p-3">
+    <h2 class="text-xl font-semibold text-center">Équipes et Joueurs</h2>
+  </div>
+  <div class="p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% Team.all.each do |team| %>
+        <div class="border border-gray-700 bg-black bg-opacity-40 rounded">
+          <div class="p-3 border-b border-gray-700 flex justify-between items-center">
+            <h3 class="text-lg font-bold"><%= team.name %></h3>
+            <span class="text-xs border border-amber-800 rounded-full px-2 py-1 bg-black bg-opacity-50">
+              <%= team.players.count %>/5 Joueurs
+            </span>
+          </div>
+          <div class="p-3">
+            <% if team.players.any? %>
+              <ul class="divide-y divide-gray-700">
+                <% team.players.each do |player| %>
+                  <li class="py-2 flex justify-between">
+                    <span><%= player.first_name %> <%= player.last_name %></span>
+                    <span class="text-amber-500"><%= player.role %></span>
+                  </li>
+                <% end %>
+              </ul>
+            <% else %>
+              <p class="text-gray-400 text-center">Aucun joueur</p>
+            <% end %>
+          </div>
+          <div class="p-3 text-center border-t border-gray-700">
+            <%= link_to "Voir détails", team_path(team), class: "lol-btn text-xs py-1 px-3 inline-block" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

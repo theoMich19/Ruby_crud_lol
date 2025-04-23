@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'dashboard/index'
   get 'results/index'
   get 'results/show'
   get 'results/new'
@@ -27,6 +28,10 @@ Rails.application.routes.draw do
   get 'teams/edit'
   get 'teams/update'
   get 'teams/destroy'
+
+
+  root "dashboard#index"
+  get 'dashboard/index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
