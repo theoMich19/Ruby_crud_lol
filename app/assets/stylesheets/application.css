@@ -1,0 +1,142 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+/* Styles globaux LOL */
+body {
+  font-family: "Beaufort for LOL", serif;
+  background-color: #010a13;
+  background-image: url("https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/fr-fr/production/fr-fr/static/hero-blurred-7572101a2ce5e003b66483b7fe5c5d36.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  color: #c8aa6e;
+}
+
+/* Superposition sombre pour améliorer la lisibilité */
+body:before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: -1;
+}
+
+/* Style de navigation */
+.lol-nav {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-bottom: 1px solid #3c3c41;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.lol-nav-link {
+  color: #c8aa6e;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.lol-nav-link:hover {
+  color: #f0e6d2;
+  text-shadow: 0 0 10px rgba(200, 170, 110, 0.5);
+}
+
+.lol-brand {
+  color: #c8aa6e;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Conteneurs de contenu stylisés */
+.lol-container {
+  background-color: rgba(0, 9, 19, 0.8);
+  border: 1px solid #3c3c41;
+  border-radius: 3px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+}
+
+.lol-header {
+  border-bottom: 1px solid #3c3c41;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Éléments d'interface */
+.lol-btn {
+  background-color: #1e2328;
+  border: 1px solid #c8aa6e;
+  color: #c8aa6e;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 16px;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.lol-btn:hover {
+  background-color: #c8aa6e;
+  color: #1e2328;
+  box-shadow: 0 0 10px rgba(200, 170, 110, 0.5);
+}
+
+.lol-btn-primary {
+  background: linear-gradient(to bottom, #785a28, #5c4822);
+  color: #f0e6d2;
+}
+
+.lol-btn-primary:hover {
+  background: linear-gradient(to bottom, #c8aa6e, #785a28);
+}
+
+/* Footer */
+.lol-footer {
+  background-color: rgba(0, 0, 0, 0.8);
+  border-top: 1px solid #3c3c41;
+}
+
+/* Tableaux */
+.lol-table th {
+  background-color: #1e2328;
+  color: #c8aa6e;
+  border-bottom: 1px solid #3c3c41;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.lol-table td {
+  border-bottom: 1px solid #3c3c41;
+  color: #f0e6d2;
+}
+
+.lol-table tr:hover td {
+  background-color: rgba(200, 170, 110, 0.1);
+}
+
+/* Alertes et notifications */
+.lol-alert-success {
+  background-color: rgba(64, 100, 54, 0.8);
+  border: 1px solid #5c9a45;
+  color: #d7ffc8;
+}
+
+.lol-alert-danger {
+  background-color: rgba(114, 46, 46, 0.8);
+  border: 1px solid #c34632;
+  color: #ffcbc8;
+}
