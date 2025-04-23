@@ -1,14 +1,25 @@
 <div id="<%= dom_id result %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Match:</strong>
-    <%= result.match_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">First team score:</strong>
-    <%= result.first_team_score %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Second team score:</strong>
-    <%= result.second_team_score %>
-  </div>
+    <div>
+        <strong class="block font-medium mb-1">Match:</strong>
+        <%= result.match.first_team.name %> vs <%= result.match.second_team.name %>
+    </div>
+    <div>
+        <strong class="block font-medium mb-1">Scores:</strong>
+        <div class="space-y-2">
+            <div>
+                <%= result.match.first_team.name %>: <%= result.first_team_score %>
+            </div>
+            <div>
+                <%= result.match.second_team.name %>: <%= result.second_team_score %>
+            </div>
+        </div>
+    </div>
+    <div>
+        <strong class="block font-medium mb-1">Vainqueur:</strong>
+        <% if result.winner %>
+        <%= result.winner.name %>
+        <% else %>
+        Match nul
+        <% end %>
+    </div>
 </div>

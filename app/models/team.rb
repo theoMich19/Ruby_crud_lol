@@ -7,6 +7,10 @@ class Team < ApplicationRecord
     
     validates :name, presence: true, uniqueness: true
     
+    def full?
+      players.count >= 5
+    end
+    
     # Méthode pour obtenir tous les matchs d'une équipe
     def matches
       Match.where('first_team_id = ? OR second_team_id = ?', id, id)

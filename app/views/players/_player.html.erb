@@ -1,18 +1,18 @@
 <div id="<%= dom_id player %>" class="w-full sm:w-auto my-5 space-y-5">
-  <div>
-    <strong class="block font-medium mb-1">Last name:</strong>
-    <%= player.last_name %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">First name:</strong>
-    <%= player.first_name %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Role:</strong>
-    <%= player.role %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Team:</strong>
-    <%= player.team_id %>
-  </div>
+    <div>
+        <strong class="block font-medium mb-1">Last name:</strong>
+        <%= player.last_name %>
+    </div>
+    <div>
+        <strong class="block font-medium mb-1">First name:</strong>
+        <%= player.first_name %>
+    </div>
+    <div>
+        <strong class="block font-medium mb-1">Role:</strong>
+        <%= player.formatted_role %>
+    </div>
+    <div>
+        <strong class="block font-medium mb-1">Team:</strong>
+        <%= player.team&.name || 'Aucune équipe' %>
+    </div>
 </div>

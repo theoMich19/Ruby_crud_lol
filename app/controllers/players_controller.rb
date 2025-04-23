@@ -23,38 +23,33 @@ class PlayersController < ApplicationController
   def create
     @player = Player.new(player_params)
 
-    respond_to do |format|
-      if @player.save
-        format.html { redirect_to @player, notice: "Player was successfully created." }
-        format.json { render :show, status: :created, location: @player }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @player.errors, status: :unprocessable_entity }
-      end
+    if @player.save
+      redirect_to @player, notice: "Player was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /players/1 or /players/1.json
   def update
-    respond_to do |format|
-      if @player.update(player_params)
-        format.html { redirect_to @player, notice: "Player was successfully updated." }
-        format.json { render :show, status: :ok, location: @player }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @player.errors, status: :unprocessable_entity }
-      end
+    # Vérifier si le joueur est dans une équipe qui a un match en cours
+    if @player.team.present? && @player.team.matches.in_progress.any?
+      @player.errors.add(:base, "L'équipe ne peut pas être modifiée car elle a un match en cours")
+      render :edit, status: :unprocessable_entity
+      return
+    end
+
+    if @player.update(player_params)
+      redirect_to @player, notice: "Player was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /players/1 or /players/1.json
   def destroy
     @player.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to players_path, status: :see_other, notice: "Player was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to players_path, status: :see_other, notice: "Player was successfully destroyed."
   end
 
   private

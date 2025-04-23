@@ -1,5 +1,5 @@
 class MatchesController < ApplicationController
-  before_action :set_match, only: %i[ show edit update destroy ]
+  before_action :set_match, only: %i[ show edit update destroy start ]
 
   # GET /matches or /matches.json
   def index
@@ -19,42 +19,40 @@ class MatchesController < ApplicationController
   def edit
   end
 
+  def start
+    if @match.can_start?
+      @match.in_progress!
+      redirect_to @match, notice: "Le match a commencé."
+    else
+      redirect_to @match, alert: "Impossible de démarrer le match."
+    end
+  end
+
   # POST /matches or /matches.json
   def create
     @match = Match.new(match_params)
+    @match.status = :upcoming
 
-    respond_to do |format|
-      if @match.save
-        format.html { redirect_to @match, notice: "Match was successfully created." }
-        format.json { render :show, status: :created, location: @match }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @match.errors, status: :unprocessable_entity }
-      end
+    if @match.save
+      redirect_to @match, notice: "Match was successfully created."
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /matches/1 or /matches/1.json
   def update
-    respond_to do |format|
-      if @match.update(match_params)
-        format.html { redirect_to @match, notice: "Match was successfully updated." }
-        format.json { render :show, status: :ok, location: @match }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @match.errors, status: :unprocessable_entity }
-      end
+    if @match.update(match_params)
+      redirect_to @match, notice: "Match was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /matches/1 or /matches/1.json
   def destroy
     @match.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to matches_path, status: :see_other, notice: "Match was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    redirect_to matches_path, status: :see_other, notice: "Match was successfully destroyed."
   end
 
   private
@@ -65,6 +63,6 @@ class MatchesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def match_params
-      params.require(:match).permit(:first_team_id, :second_team_id, :date, :status)
+      params.require(:match).permit(:first_team_id, :second_team_id, :date)
     end
 end
