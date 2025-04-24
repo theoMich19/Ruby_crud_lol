@@ -1,10 +1,47 @@
-<% content_for :title, "Editing result" %>
+<% content_for :title, "Modification du Résultat" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">Editing result</h1>
+<div class="lol-container mb-6">
+  <div class="lol-header p-3">
+    <h1 class="text-2xl font-semibold text-center">Modifier le Résultat</h1>
+  </div>
+  
+  <div class="p-6">
+    <!-- Informations du match -->
+    <div class="mb-6 text-center">
+      <div class="text-amber-500 font-medium mb-2">
+        <%= @match.date.strftime("%d %b %Y") %> - <%= @match.date.strftime("%H:%M") %>
+      </div>
+      <div class="text-xl font-bold">
+        <%= @match.first_team.name %> <span class="text-gray-500">VS</span> <%= @match.second_team.name %>
+      </div>
+    </div>
+    
+    <!-- Formulaire -->
+    <div class="bg-black bg-opacity-40 p-6 rounded-lg border border-gray-700">
+      <%= render "form", result: @result %>
+    </div>
+    
+    <!-- Actions -->
+    <div class="flex flex-wrap justify-center gap-3 mt-8">      
+      <%= link_to results_path, class: "lol-btn" do %>
+        <div class="flex items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Retour aux résultats
+        </div>
+      <% end %>
 
-  <%= render "form", result: @result %>
 
-  <%= link_to "Show this result", @result, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to results", results_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+      <%= link_to match_path(@match), class: "lol-btn inline-block" do %>
+    <div class="flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+      </svg>
+      Voir les détails du match
+    </div>
+  <% end %>
+    </div>
+  </div>
 </div>

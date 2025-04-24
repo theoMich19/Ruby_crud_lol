@@ -1,34 +1,43 @@
-<%= form_with(model: result.persisted? ? result : [@match, result], class: "contents") do |form| %>
-<% if result.errors.any? %>
-<div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-    <h2><%= pluralize(result.errors.count, "error") %> prohibited this result from being saved:</h2>
-
-    <ul class="list-disc ml-6">
-        <% result.errors.each do |error| %>
-        <li><%= error.full_message %></li>
-        <% end %>
-    </ul>
-</div>
-<% end %>
-
-<div class="my-5">
-    <div class="mb-4">
-        <strong class="block font-medium mb-1">Match:</strong>
-        <%= @match.first_team.name %> vs <%= @match.second_team.name %>
+<%= form_with(model: result) do |form| %>
+    <% if result.errors.any? %>
+      <div class="bg-red-900 bg-opacity-50 border border-red-700 text-white rounded-md p-4 mb-6">
+        <h2 class="text-lg font-medium mb-2"><%= pluralize(result.errors.count, "erreur") %> :</h2>
+        <ul class="list-disc pl-5">
+          <% result.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+      <!-- Équipe 1 -->
+      <div class="w-full md:w-2/5 mb-6 md:mb-0">
+        <div class="text-center mb-3">
+          <div class="text-lg font-bold mt-2"><%= @match.first_team.name %></div>
+        </div>
+        
+        <%= form.number_field :first_team_score, class: "bg-black bg-opacity-70 border border-gray-700 text-amber-400 text-center text-3xl py-3 px-4 w-full rounded focus:border-amber-500 focus:ring-1 focus:ring-amber-500 focus:outline-none", min: 0 %>
+      </div>
+      
+      <!-- Élément central -->
+      <div class="mb-4 md:mb-0 text-center">
+        <div class="text-xl md:text-2xl text-gray-500 font-bold mb-3">VS</div>
+      </div>
+      
+      <!-- Équipe 2 -->
+      <div class="w-full md:w-2/5">
+        <div class="text-center mb-3">
+          <div class="text-lg font-bold mt-2"><%= @match.second_team.name %></div>
+        </div>
+        
+        <%= form.number_field :second_team_score, class: "bg-black bg-opacity-70 border border-gray-700 text-amber-400 text-center text-3xl py-3 px-4 w-full rounded focus:border-amber-500 focus:ring-1 focus:ring-amber-500 focus:outline-none", min: 0 %>
+      </div>
     </div>
-</div>
-
-<div class="my-5">
-    <%= form.label :first_team_score, "#{@match.first_team.name} - Score" %>
-    <%= form.number_field :first_team_score, class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full" %>
-</div>
-
-<div class="my-5">
-    <%= form.label :second_team_score, "#{@match.second_team.name} - Score" %>
-    <%= form.number_field :second_team_score, class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full" %>
-</div>
-
-<div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-</div>
-<% end %>
+    
+    <%= form.hidden_field :match_id, value: @match.id %>
+    
+    <div class="text-center mt-6">
+      <%= form.submit "Enregistrer le résultat", class: "lol-btn lol-btn-primary px-6 py-3 inline-block cursor-pointer" %>
+    </div>
+  <% end %>

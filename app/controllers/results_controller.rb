@@ -4,7 +4,9 @@ class ResultsController < ApplicationController
 
   # GET /results or /results.json
   def index
-    @results = Result.all
+    @results = Result.includes(match: [:first_team, :second_team])
+              .joins(:match)
+              .order('matches.date DESC')
   end
 
   # GET /results/1 or /results/1.json
