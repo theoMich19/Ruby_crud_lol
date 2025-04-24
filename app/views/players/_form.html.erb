@@ -1,8 +1,7 @@
 <%= form_with(model: player, class: "contents") do |form| %>
 <% if player.errors.any? %>
-<div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-    <h2><%= pluralize(player.errors.count, "error") %> prohibited this player from being saved:</h2>
-
+<div id="error_explanation" class="lol-container p-4 mb-4 bg-red-600/10 text-red-500">
+    <h2 class="font-semibold mb-2"><%= pluralize(player.errors.count, "erreur") %> a empêché ce joueur d'être sauvegardé :</h2>
     <ul class="list-disc ml-6">
         <% player.errors.each do |error| %>
         <li><%= error.full_message %></li>
@@ -11,30 +10,47 @@
 </div>
 <% end %>
 
-<div class="my-5">
-    <%= form.label :last_name %>
-    <%= form.text_field :last_name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": player.errors[:last_name].none?, "border-red-400 focus:outline-red-600": player.errors[:last_name].any?}] %>
-</div>
+<div class="lol-container p-6">
+    <div class="lol-header p-3 mb-4">
+        <h2 class="text-xl font-semibold text-center">
+            <%= player.new_record? ? "Nouveau joueur" : "Modifier le joueur" %>
+        </h2>
+    </div>
 
-<div class="my-5">
-    <%= form.label :first_name %>
-    <%= form.text_field :first_name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": player.errors[:first_name].none?, "border-red-400 focus:outline-red-600": player.errors[:first_name].any?}] %>
-</div>
+    <div class="space-y-6">
+        <div>
+            <%= form.label :last_name, "Nom", class: "block text-sm font-medium text-gray-300 mb-2" %>
+            <%= form.text_field :last_name, 
+                    class: "block w-full rounded-md border border-gray-700 bg-gray-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-c8aa6e focus:border-transparent",
+                    placeholder: "Entrez le nom du joueur" %>
+        </div>
 
-<div class="my-5">
-    <%= form.label :role %>
-    <%= form.select :role, [['Non défini', '']] + Player.roles.keys.map { |role| [role.humanize, role] }, {}, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": player.errors[:role].none?, "border-red-400 focus:outline-red-600": player.errors[:role].any?}] %>
-</div>
+        <div>
+            <%= form.label :first_name, "Prénom", class: "block text-sm font-medium text-gray-300 mb-2" %>
+            <%= form.text_field :first_name, 
+                    class: "block w-full rounded-md border border-gray-700 bg-gray-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-c8aa6e focus:border-transparent",
+                    placeholder: "Entrez le prénom du joueur" %>
+        </div>
 
-<div class="my-5">
-    <%= form.label :team_id, "Équipe" %>
-    <%= form.select :team_id, 
-        [['Aucune équipe', '']] + team_options_for_select,
-        {},
-        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": player.errors[:team_id].none?, "border-red-400 focus:outline-red-600": player.errors[:team_id].any?}] %>
-</div>
+        <div>
+            <%= form.label :role, "Rôle", class: "block text-sm font-medium text-gray-300 mb-2" %>
+            <%= form.select :role, 
+                    [['Non défini', '']] + Player.roles.keys.map { |role| [role.humanize, role] }, 
+                    {}, 
+                    class: "block w-full rounded-md border border-gray-700 bg-gray-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-c8aa6e focus:border-transparent" %>
+        </div>
 
-<div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+        <div>
+            <%= form.label :team_id, "Équipe", class: "block text-sm font-medium text-gray-300 mb-2" %>
+            <%= form.select :team_id, 
+                    [['Aucune équipe', '']] + team_options_for_select,
+                    {}, 
+                    class: "block w-full rounded-md border border-gray-700 bg-gray-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-c8aa6e focus:border-transparent" %>
+        </div>
+
+        <div class="flex justify-center">
+            <%= form.submit class: "lol-btn lol-btn-primary px-6 py-2" %>
+        </div>
+    </div>
 </div>
 <% end %>
