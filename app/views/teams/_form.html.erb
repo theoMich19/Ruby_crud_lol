@@ -1,22 +1,33 @@
 <%= form_with(model: team, class: "contents") do |form| %>
-  <% if team.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-      <h2><%= pluralize(team.errors.count, "error") %> prohibited this team from being saved:</h2>
-
-      <ul class="list-disc ml-6">
+<% if team.errors.any? %>
+<div class="lol-alert-danger p-4 mb-6 rounded">
+    <h2 class="font-bold mb-2"><%= pluralize(team.errors.count, "erreur") %> ont empêché cette équipe d'être sauvegardée :</h2>
+    <ul class="list-disc ml-6">
         <% team.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+        <li><%= error.full_message %></li>
         <% end %>
-      </ul>
+    </ul>
+</div>
+<% end %>
+
+<div class="lol-container p-6">
+    <div class="lol-header p-3 mb-4">
+        <h2 class="text-xl font-semibold text-center">
+            <%= team.new_record? ? "Nouvelle équipe" : "Modifier l'équipe" %>
+        </h2>
     </div>
-  <% end %>
 
-  <div class="my-5">
-    <%= form.label :name %>
-    <%= form.text_field :name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": team.errors[:name].none?, "border-red-400 focus:outline-red-600": team.errors[:name].any?}] %>
-  </div>
+    <div class="space-y-6">
+        <div>
+            <%= form.label :name, "Nom de l'équipe", class: "block text-sm font-medium text-gray-300 mb-2" %>
+            <%= form.text_field :name, 
+            class: "block w-full rounded-md border border-gray-700 bg-gray-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-c8aa6e focus:border-transparent",
+            placeholder: "Entrez le nom de l'équipe" %>
+        </div>
 
-  <div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-  </div>
+        <div class="flex justify-center">
+            <%= form.submit class: "lol-btn lol-btn-primary px-6 py-2" %>
+        </div>
+    </div>
+</div>
 <% end %>

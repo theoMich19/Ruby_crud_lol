@@ -1,9 +1,25 @@
-<% content_for :title, "New match" %>
+<% content_for :title, "Nouveau match" %>
 
-<div class="md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">New match</h1>
+<div class="lol-container p-6 mb-8">
+    <h1 class="text-3xl font-bold text-center">NOUVEAU MATCH</h1>
+    <p class="text-center text-xl mt-2 text-gray-400">Saison 2025</p>
+</div>
 
-  <%= render "form", match: @match %>
-
-  <%= link_to "Back to matches", matches_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+<div class="lol-container max-w-3xl mx-auto mb-8">
+    <div class="lol-header p-3">
+        <h2 class="text-xl font-semibold text-center">Programmer un match</h2>
+    </div>
+    
+    <div class="p-6">
+        <%= render "form", match: @match %>
+        
+        <div class="mt-6 text-center">
+            <%= link_to matches_path, class: "lol-btn py-2 px-4 flex items-center justify-center mx-auto" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Retour à la liste
+            <% end %>
+        </div>
+    </div>
 </div>

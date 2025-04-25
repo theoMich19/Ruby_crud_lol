@@ -1,15 +1,79 @@
-<% content_for :title, "Showing player" %>
+<% content_for :title, "Détails du joueur" %>
 
-<div class="md:w-2/3 w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="lol-container bg-gradient-to-b from-[#0a1428] to-[#091428] border border-[#785a28] rounded-t-md shadow-lg mb-6">
+        <div class="lol-header p-4 border-b border-[#3c3c41] relative">
+            <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+                <%= link_to players_path, class: "text-[#c8aa6e] hover:text-[#f0e6d2] transition-colors duration-200" do %>
+                    <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                <% end %>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-center text-[#c8aa6e]">
+                <%= @player.first_name %> <%= @player.last_name %>
+            </h2>
+            
+            <div class="absolute right-4 top-1/2 transform -translate-y-1/2">
+                <%= link_to edit_player_path(@player), class: "text-[#c8aa6e] hover:text-[#f0e6d2] transition-colors duration-200" do %>
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                <% end %>
+            </div>
+        </div>
 
-  <h1 class="font-bold text-4xl">Showing player</h1>
+        <div class="flex justify-center -mt-px">
+            <div class="px-6 py-2 bg-[#1e2328] border-x border-b border-[#3c3c41] rounded-b-md">
+                <div class="flex items-center">
+                    <% role_icon = case @player.role 
+                       when "Top laner" 
+                       %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 6L6 12L12 18L18 12L12 6Z"/></svg><%
+                       when "Jungler" 
+                       %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 6L8 10H16L12 6Z"/><path fill="white" d="M12 18L16 14H8L12 18Z"/></svg><%
+                       when "Mid laner" 
+                       %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 12L6 6L18 18L12 12Z"/><path fill="white" d="M12 12L18 6L6 18L12 12Z"/></svg><%
+                       when "ADC" 
+                       %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M7 12H17M12 7V17"/></svg><%
+                       when "Support" 
+                       %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M8 9H16M12 8V16M9 16H15"/></svg><%
+                       else 
+                       %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg><%
+                       end %>
+                    <span class="text-[#c8aa6e] font-semibold uppercase tracking-wider text-sm"><%= @player.formatted_role || @player.role %></span>
+                </div>
+            </div>
+        </div>
 
-  <%= render @player %>
+        <div class="p-6">
+            <%= render @player %>
+        </div>
 
-  <%= link_to "Edit this player", edit_player_path(@player), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= link_to "Back to players", players_path, class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-  <%= button_to "Destroy this player", @player, method: :delete, form_class: "sm:inline-block mt-2 sm:mt-0 sm:ml-2", class: "w-full rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+        <div class="border-t border-[#3c3c41] bg-[#0a1428] p-4 rounded-b-md">
+            <div class="flex flex-wrap justify-center gap-4">   
+                <%= link_to players_path, class: "lol-btn flex items-center" do %>
+                    <svg class="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Retour à la liste
+                <% end %>
+
+                <%= link_to edit_player_path(@player), class: "lol-btn flex items-center" do %>
+                    <svg class="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                    Modifier
+                <% end %>
+             
+                
+                <%= button_to @player, method: :delete, class: "lol-btn flex items-center bg-gradient-to-b from-[#722e2e] to-[#4d1f1f] border-[#c34632] hover:from-[#8a3636] hover:to-[#5e2424]", data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce joueur ?" } do %>
+                    <svg class="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    Supprimer
+                <% end %>
+            </div>
+        </div>
+    </div>
 </div>

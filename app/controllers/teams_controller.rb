@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  before_action :set_team, only: %i[ show edit update destroy ]
+  before_action :set_team, only: %i[ show edit update destroy add_player remove_player ]
 
   # GET /teams or /teams.json
   def index
@@ -25,7 +25,7 @@ class TeamsController < ApplicationController
 
     respond_to do |format|
       if @team.save
-        format.html { redirect_to @team, notice: "Team was successfully created." }
+        format.html { redirect_to team_url(@team), notice: "Team was successfully created." }
         format.json { render :show, status: :created, location: @team }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class TeamsController < ApplicationController
   def update
     respond_to do |format|
       if @team.update(team_params)
-        format.html { redirect_to @team, notice: "Team was successfully updated." }
+        format.html { redirect_to team_url(@team), notice: "Team was successfully updated." }
         format.json { render :show, status: :ok, location: @team }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -52,8 +52,26 @@ class TeamsController < ApplicationController
     @team.destroy!
 
     respond_to do |format|
-      format.html { redirect_to teams_path, status: :see_other, notice: "Team was successfully destroyed." }
+      format.html { redirect_to teams_url, notice: "Team was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def add_player
+    player = Player.find(params[:player_id])
+    if player.update(team: @team)
+      redirect_to @team, notice: "Le joueur a été ajouté à l'équipe avec succès."
+    else
+      redirect_to @team, alert: "Impossible d'ajouter le joueur à l'équipe."
+    end
+  end
+
+  def remove_player
+    player = Player.find(params[:player_id])
+    if player.update(team: nil)
+      redirect_to @team, notice: "Le joueur a été retiré de l'équipe avec succès."
+    else
+      redirect_to @team, alert: "Impossible de retirer le joueur de l'équipe."
     end
   end
 
