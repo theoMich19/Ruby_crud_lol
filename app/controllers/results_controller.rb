@@ -5,8 +5,8 @@ class ResultsController < ApplicationController
   # GET /results or /results.json
   def index
     @results = Result.includes(match: [:first_team, :second_team])
-              .joins(:match)
-              .order('matches.date DESC')
+            .joins(:match)
+            .order('matches.date DESC')
   end
 
   # GET /results/1 or /results/1.json
@@ -51,7 +51,7 @@ class ResultsController < ApplicationController
 
     if @result.save
       @match.completed!
-      redirect_to @result, notice: "Le résultat a été enregistré avec succès."
+      redirect_to @match, notice: "Le résultat a été enregistré avec succès."
     else
       render :new, status: :unprocessable_entity
     end
@@ -60,7 +60,7 @@ class ResultsController < ApplicationController
   # PATCH/PUT /results/1 or /results/1.json
   def update
     if @result.update(result_params)
-      redirect_to @result, notice: "Le résultat a été mis à jour avec succès."
+      redirect_to @result.match, notice: "Le résultat a été mis à jour avec succès."
     else
       render :edit, status: :unprocessable_entity
     end
