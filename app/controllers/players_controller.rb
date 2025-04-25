@@ -6,15 +6,23 @@ class PlayersController < ApplicationController
     @players = Player.all
     
     # Filtre par rôle
-    if params[:role].present? && params[:role] != ""
-      @players = @players.where(role: params[:role])
+    if params[:role].present?
+      if params[:role] == "none"
+        @players = @players.where(role: [nil, ""])
+      else
+        @players = @players.where(role: params[:role])
+      end
     end
-    
+
     # Filtre par équipe
-    if params[:team_id].present? && params[:team_id] != ""
-      @players = @players.where(team_id: params[:team_id])
+    if params[:team_id].present?
+      if params[:team_id] == "none"
+        @players = @players.where(team_id: nil)
+      else
+        @players = @players.where(team_id: params[:team_id])
+      end
     end
-    
+
     # Recherche par nom/prénom
     if params[:search].present?
       search_term = "%#{params[:search]}%"

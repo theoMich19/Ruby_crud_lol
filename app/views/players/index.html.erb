@@ -32,7 +32,8 @@
                     ["Jungler", "Jungler"], 
                     ["Mid laner", "Mid laner"], 
                     ["ADC", "ADC"], 
-                    ["Support", "Support"]
+                    ["Support", "Support"],
+                    ["Sans rôle", "none"]
                 ],
                 { selected: @selected_role },
                 { 
@@ -40,8 +41,11 @@
                     onchange: "this.form.submit()"
                 } %>
             
-            <%= form.select :team_id, 
-                options_for_select([["Toutes les équipes", ""]] + Team.all.map { |t| [t.name, t.id] }, @selected_team),
+                <%= form.select :team_id, 
+                    options_for_select(
+                        [["Toutes les équipes", ""]] + Team.all.map { |t| [t.name, t.id] } + [["Sans équipe", "none"]],
+                        @selected_team
+                    ),
                 {},
                 { 
                     class: "bg-[#1e2328] border border-[#3c3c41] rounded-md px-3 py-2 text-[#f0e6d2] appearance-none focus:outline-none focus:border-[#c8aa6e]",
@@ -113,9 +117,7 @@
                     <div class="border border-[#3c3c41] bg-[#0a1428] bg-opacity-50 rounded-md overflow-hidden hover:border-[#c8aa6e] transition-all duration-300">
                         <div class="flex justify-between items-center bg-[#1e2328] p-3 border-b border-[#3c3c41]">
                             <h3 class="text-lg font-semibold"><%= player.first_name %> <%= player.last_name %></h3>
-                            <div class="px-2 py-1 bg-[#352410] text-[#c8aa6e] rounded text-xs uppercase font-bold tracking-wide">
-                                <%= player.formatted_role || player.role %>
-                            </div>
+                           
                         </div>
                         
                         <div class="p-4">
