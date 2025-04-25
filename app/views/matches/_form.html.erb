@@ -1,58 +1,80 @@
 <%= form_with(model: match, class: "contents", data: { controller: "match-form" }) do |form| %>
-<% if match.errors.any? %>
-<div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
-    <h2><%= pluralize(match.errors.count, "error") %> prohibited this match from being saved:</h2>
-
-    <ul class="list-disc ml-6">
-        <% match.errors.each do |error| %>
-        <li><%= error.full_message %></li>
-        <% end %>
-    </ul>
-</div>
-<% end %>
-
-<div class="my-5">
-    <%= form.label :first_team_id, "Première équipe" %>
-    <%= form.collection_select :first_team_id, 
-        Team.all, 
-        :id, 
-        ->(team) { "#{team.name} (#{team.players.count} joueur(s))" },
-        { include_blank: 'Sélectionner une équipe' }, 
-        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:first_team_id].none?, "border-red-400 focus:outline-red-600": match.errors[:first_team_id].any?}],
-        data: { 
-          "match-form-target": "firstTeam", 
-          action: "change->match-form#updateDateFieldState",
-          players: Team.all.map { |t| [t.id, t.players.count] }.to_h.to_json
-        } %>
-</div>
-
-<div class="my-5">
-    <%= form.label :second_team_id, "Deuxième équipe" %>
-    <%= form.collection_select :second_team_id, 
-        Team.all, 
-        :id, 
-        ->(team) { "#{team.name} (#{team.players.count} joueur(s))" },
-        { include_blank: 'Sélectionner une équipe' }, 
-        class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:second_team_id].none?, "border-red-400 focus:outline-red-600": match.errors[:second_team_id].any?}],
-        data: { 
-          "match-form-target": "secondTeam", 
-          action: "change->match-form#updateDateFieldState",
-          players: Team.all.map { |t| [t.id, t.players.count] }.to_h.to_json
-        } %>
-</div>
-
-<div class="my-5">
-    <%= form.label :date %>
-    <div data-match-form-target="dateMessage" class="bg-yellow-50 text-yellow-700 p-3 rounded-md">
-        Veuillez d'abord sélectionner deux équipes différentes valides (avec au moins un joueur chacune) pour pouvoir programmer le match.
+    <% if match.errors.any? %>
+      <div id="error_explanation" class="lol-alert-danger px-4 py-3 rounded-md mb-6">
+        <h2 class="font-bold text-lg mb-2"><%= pluralize(match.errors.count, "erreur") %> :</h2>
+        <ul class="list-disc ml-6">
+          <% match.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <!-- Première équipe -->
+      <div>
+        <%= form.label :first_team_id, "Première équipe", class: "block text-lg font-medium mb-2" %>
+        <div class="relative">
+          <%= form.collection_select :first_team_id, 
+              Team.all, 
+              :id, 
+              ->(team) { "#{team.name} (#{team.players.count} joueur(s))" },
+              { include_blank: 'Sélectionner une équipe' }, 
+              class: "block w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-3 text-[#f0e6d2] appearance-none focus:outline-none focus:border-[#c8aa6e] focus:ring focus:ring-[#c8aa6e] focus:ring-opacity-20",
+              data: { 
+                "match-form-target": "firstTeam", 
+                action: "change->match-form#updateDateFieldState",
+                players: Team.all.map { |t| [t.id, t.players.count] }.to_h.to_json
+              } %>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            
+          </div>
+        </div>
+      </div>
+  
+      <!-- Deuxième équipe -->
+      <div>
+        <%= form.label :second_team_id, "Deuxième équipe", class: "block text-lg font-medium mb-2" %>
+        <div class="relative">
+          <%= form.collection_select :second_team_id, 
+              Team.all, 
+              :id, 
+              ->(team) { "#{team.name} (#{team.players.count} joueur(s))" },
+              { include_blank: 'Sélectionner une équipe' }, 
+              class: "block w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-3 text-[#f0e6d2] appearance-none focus:outline-none focus:border-[#c8aa6e] focus:ring focus:ring-[#c8aa6e] focus:ring-opacity-20",
+              data: { 
+                "match-form-target": "secondTeam", 
+                action: "change->match-form#updateDateFieldState",
+                players: Team.all.map { |t| [t.id, t.players.count] }.to_h.to_json
+              } %>
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+          </div>
+        </div>
+      </div>
     </div>
-    <div data-match-form-target="dateFieldContainer" class="hidden">
+  
+    <!-- Date du match -->
+    <div class="mb-6">
+      <%= form.label :date, "Date du match", class: "block text-lg font-medium mb-2" %>
+        
+      <div data-match-form-target="dateMessage" class="bg-[#352410] border border-[#785a28] text-[#f0e6d2] p-4 rounded-md mb-3">
+        <div class="flex items-start">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#c8aa6e] mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <span>Veuillez d'abord sélectionner deux équipes différentes valides (avec au moins un joueur chacune) pour pouvoir programmer le match.</span>
+        </div>
+      </div>
+        
+      <div data-match-form-target="dateFieldContainer" class="hidden">
         <%= form.datetime_field :date, 
-            class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": match.errors[:date].none?, "border-red-400 focus:outline-red-600": match.errors[:date].any?}] %>
+            class: "block w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-3 text-[#f0e6d2] focus:outline-none focus:border-[#c8aa6e] focus:ring focus:ring-[#c8aa6e] focus:ring-opacity-20",
+            style: "color-scheme: dark;" %>
+      </div>
     </div>
-</div>
-
-<div class="inline">
-    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
-</div>
-<% end %>
+  
+    <!-- Bouton de soumission -->
+    <div class="mt-8">
+      <%= form.submit "Créer le match", class: "lol-btn lol-btn-primary py-3 px-6 w-full md:w-auto text-lg" %>
+    </div>
+  <% end %>

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       get :teams
       post :start
     end
-    resources :results, only: [:new, :create]
+    resources :results, only: [:new, :create, :edit, :update]
   end
   
   
