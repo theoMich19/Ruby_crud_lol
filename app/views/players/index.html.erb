@@ -1,14 +1,8 @@
 <% content_for :title, "Joueurs" %>
 
-<!-- En-tête -->
-<div class="lol-container p-6 mb-8">
-    <h1 class="text-3xl font-bold text-center">JOUEURS</h1>
-    <p class="text-center text-xl mt-2 text-gray-300">Gestion des joueurs du tournoi</p>
-</div>
-
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="lol-container p-4 mb-6">
-    <%= form_with url: players_path, method: :get, class: "w-full", data: { turbo_frame: "_top" } do |form| %>
+    <div class="lol-container p-4 mb-6">
+        <%= form_with url: players_path, method: :get, class: "w-full", data: { turbo_frame: "_top" } do |form| %>
         <div class="flex flex-wrap items-center gap-3">
             <!-- Barre de recherche -->
             <div class="relative flex-grow min-w-[200px] mr-2">
@@ -18,12 +12,12 @@
                     class: "w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-2 pr-10 text-[#f0e6d2] focus:outline-none focus:border-[#c8aa6e]" %>
                 <button type="submit" class="absolute right-3 top-1/2 transform -translate-y-1/2 focus:outline-none">
                     <svg class="h-5 w-5 text-[#c8aa6e]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <circle cx="11" cy="11" r="8" stroke-width="2"/>
-                        <path d="M21 21L16.65 16.65" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="11" cy="11" r="8" stroke-width="2" />
+                        <path d="M21 21L16.65 16.65" stroke-width="2" stroke-linecap="round" />
                     </svg>
                 </button>
             </div>
-            
+
             <!-- Filtres -->
             <%= form.select :role, 
                 [
@@ -40,8 +34,8 @@
                     class: "bg-[#1e2328] border border-[#3c3c41] rounded-md px-3 py-2 text-[#f0e6d2] appearance-none focus:outline-none focus:border-[#c8aa6e]",
                     onchange: "this.form.submit()"
                 } %>
-            
-                <%= form.select :team_id, 
+
+            <%= form.select :team_id, 
                     options_for_select(
                         [["Toutes les équipes", ""]] + Team.all.map { |t| [t.name, t.id] } + [["Sans équipe", "none"]],
                         @selected_team
@@ -51,157 +45,176 @@
                     class: "bg-[#1e2328] border border-[#3c3c41] rounded-md px-3 py-2 text-[#f0e6d2] appearance-none focus:outline-none focus:border-[#c8aa6e]",
                     onchange: "this.form.submit()"
                 } %>
-            
+
             <!-- Bouton réinitialiser -->
             <% if @search_term.present? || @selected_role.present? || @selected_team.present? %>
-                <%= link_to players_path, class: "lol-btn py-2 px-3 text-sm flex items-center justify-center" do %>
-                    <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 3v5h5"/>
-                        <path d="M3 3l6.75 6.75"/>
-                        <path d="M21 21v-5h-5"/>
-                        <path d="M21 21l-6.75-6.75"/>
-                        <path d="M3 21v-5h5"/>
-                        <path d="M21 3v5h-5"/>
-                    </svg>
-                    Réinitialiser
-                <% end %>
+            <%= link_to players_path, class: "lol-btn py-2 px-3 text-sm flex items-center justify-center" do %>
+            <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3v5h5" />
+                <path d="M3 3l6.75 6.75" />
+                <path d="M21 21v-5h-5" />
+                <path d="M21 21l-6.75-6.75" />
+                <path d="M3 21v-5h5" />
+                <path d="M21 3v5h-5" />
+            </svg>
+            Réinitialiser
+            <% end %>
             <% end %>
         </div>
-    <% end %>
-</div>
-
-
+        <% end %>
     </div>
 
-    <!-- Liste des joueurs -->
-    <div class="lol-container mb-8">
+
+</div>
+
+<!-- Liste des joueurs -->
+<div class="lol-container mb-8">
     <div class="lol-header p-3 relative">
         <!-- Titre centré -->
         <h2 class="text-xl font-semibold text-center">
             Liste des joueurs (<%= @players.count %>)
             <% if @search_term.present? || @selected_role.present? || @selected_team.present? %>
-                <span class="text-sm text-gray-400 ml-2">- Filtres actifs</span>
+            <span class="text-sm text-gray-400 ml-2">- Filtres actifs</span>
             <% end %>
         </h2>
-        
+
         <!-- Bouton en position absolue sur desktop/tablette, normal sur mobile -->
         <div class="hidden md:flex absolute right-3 top-1/2 transform -translate-y-1/2">
             <%= link_to new_player_path, class: "lol-btn lol-btn-primary px-3 py-1.5 text-sm" do %>
-                <div class="flex items-center justify-center">
-                    <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                    Nouveau joueur
-                </div>
+            <div class="flex items-center justify-center">
+                <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Nouveau joueur
+            </div>
             <% end %>
         </div>
-        
+
         <!-- Version mobile du bouton (en dessous du titre) -->
         <div class="md:hidden mt-3 flex justify-center">
             <%= link_to new_player_path, class: "lol-btn lol-btn-primary px-3 py-1.5 text-sm" do %>
-                <div class="flex items-center justify-center">
-                    <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                    </svg>
-                    Nouveau joueur
-                </div>
+            <div class="flex items-center justify-center">
+                <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Nouveau joueur
+            </div>
             <% end %>
         </div>
     </div>
-        <div class="p-4">
-            <% if @players.any? %>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <% @players.each do |player| %>
-                    <div class="border border-[#3c3c41] bg-[#0a1428] bg-opacity-50 rounded-md overflow-hidden hover:border-[#c8aa6e] transition-all duration-300">
-                        <div class="flex justify-between items-center bg-[#1e2328] p-3 border-b border-[#3c3c41]">
-                            <h3 class="text-lg font-semibold"><%= player.first_name %> <%= player.last_name %></h3>
-                           
-                        </div>
-                        
-                        <div class="p-4">
-                            <div class="flex items-center mb-3">
-                                <!-- SVG pour le rôle -->
-                                <% role_icon = case player.role 
+    <div class="p-4">
+        <% if @players.any? %>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <% @players.each do |player| %>
+            <div class="border border-[#3c3c41] bg-[#0a1428] bg-opacity-50 rounded-md overflow-hidden hover:border-[#c8aa6e] transition-all duration-300">
+                <div class="flex justify-between items-center bg-[#1e2328] p-3 border-b border-[#3c3c41]">
+                    <h3 class="text-lg font-semibold"><%= player.first_name %> <%= player.last_name %></h3>
+
+                </div>
+
+                <div class="p-4">
+                    <div class="flex items-center mb-3">
+                        <!-- SVG pour le rôle -->
+                        <% role_icon = case player.role 
                                    when "Top laner" 
-                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 6L6 12L12 18L18 12L12 6Z"/></svg><%
+                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="10" />
+                            <path fill="white" d="M12 6L6 12L12 18L18 12L12 6Z" />
+                        </svg><%
                                    when "Jungler" 
-                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 6L8 10H16L12 6Z"/><path fill="white" d="M12 18L16 14H8L12 18Z"/></svg><%
+                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="10" />
+                            <path fill="white" d="M12 6L8 10H16L12 6Z" />
+                            <path fill="white" d="M12 18L16 14H8L12 18Z" />
+                        </svg><%
                                    when "Mid laner" 
-                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 12L6 6L18 18L12 12Z"/><path fill="white" d="M12 12L18 6L6 18L12 12Z"/></svg><%
+                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="10" />
+                            <path fill="white" d="M12 12L6 6L18 18L12 12Z" />
+                            <path fill="white" d="M12 12L18 6L6 18L12 12Z" />
+                        </svg><%
                                    when "ADC" 
-                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M7 12H17M12 7V17"/></svg><%
+                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="10" />
+                            <path fill="white" d="M7 12H17M12 7V17" />
+                        </svg><%
                                    when "Support" 
-                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M8 9H16M12 8V16M9 16H15"/></svg><%
+                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="10" />
+                            <path fill="white" d="M8 9H16M12 8V16M9 16H15" />
+                        </svg><%
                                    else 
-                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg><%
+                                   %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <circle cx="12" cy="12" r="10" />
+                        </svg><%
                                    end %>
-                                
-                                <div class="text-sm">
-                                    <span class="text-gray-400">Rôle: </span>
-                                    <span class="text-[#f0e6d2]"><%= player.formatted_role || player.role %></span>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center mb-3">
-                                <!-- SVG pour l'équipe -->
-                                <svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                    <circle cx="9" cy="9" r="4" stroke-width="2"/>
-                                    <circle cx="15" cy="15" r="4" stroke-width="2"/>
-                                </svg>
-                                <div class="text-sm">
-                                    <span class="text-gray-400">Équipe: </span>
-                                    <% if player.team.present? %>
-                                        <span class="text-[#f0e6d2]"><%= player.team.name %></span>
-                                    <% else %>
-                                        <span class="text-gray-500 italic">Sans équipe</span>
-                                    <% end %>
-                                </div>
-                            </div>
+
+                        <div class="text-sm">
+                            <span class="text-gray-400">Rôle: </span>
+                            <span class="text-[#f0e6d2]"><%= player.formatted_role || player.role %></span>
                         </div>
-                        
-                        <div class="flex border-t border-[#3c3c41]">
-                            <%= link_to player, class: "flex-1 py-2 text-center border-r border-[#3c3c41] text-[#c8aa6e] hover:bg-[#1e2328] transition-colors duration-200" do %>
-                                <div class="flex items-center justify-center">
-                                    <!-- SVG pour détails -->
-                                    <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <circle cx="12" cy="12" r="3"/>
-                                    </svg>
-                                    Détails
-                                </div>
-                            <% end %>
-                            
-                            <%= link_to edit_player_path(player), class: "flex-1 py-2 text-center text-[#c8aa6e] hover:bg-[#1e2328] transition-colors duration-200" do %>
-                                <div class="flex items-center justify-center">
-                                    <!-- SVG pour modifier -->
-                                    <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-                                    </svg>
-                                    Modifier
-                                </div>
+                    </div>
+
+                    <div class="flex items-center mb-3">
+                        <!-- SVG pour l'équipe -->
+                        <svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="9" cy="9" r="4" stroke-width="2" />
+                            <circle cx="15" cy="15" r="4" stroke-width="2" />
+                        </svg>
+                        <div class="text-sm">
+                            <span class="text-gray-400">Équipe: </span>
+                            <% if player.team.present? %>
+                            <span class="text-[#f0e6d2]"><%= player.team.name %></span>
+                            <% else %>
+                            <span class="text-gray-500 italic">Sans équipe</span>
                             <% end %>
                         </div>
                     </div>
+                </div>
+
+                <div class="flex border-t border-[#3c3c41]">
+                    <%= link_to player, class: "flex-1 py-2 text-center border-r border-[#3c3c41] text-[#c8aa6e] hover:bg-[#1e2328] transition-colors duration-200" do %>
+                    <div class="flex items-center justify-center">
+                        <!-- SVG pour détails -->
+                        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        Détails
+                    </div>
+                    <% end %>
+
+                    <%= link_to edit_player_path(player), class: "flex-1 py-2 text-center text-[#c8aa6e] hover:bg-[#1e2328] transition-colors duration-200" do %>
+                    <div class="flex items-center justify-center">
+                        <!-- SVG pour modifier -->
+                        <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                        </svg>
+                        Modifier
+                    </div>
                     <% end %>
                 </div>
-            <% else %>
-                <div class="text-center py-8">
-                    <!-- SVG pour état vide -->
-                    <svg class="h-16 w-16 mx-auto text-gray-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M8 15h8M9 9h.01M15 9h.01"/>
-                    </svg>
-                    <% if @search_term.present? || @selected_role.present? || @selected_team.present? %>
-                        <p class="text-gray-400 text-xl mb-4">Aucun joueur ne correspond à ces critères</p>
-                        <p class="text-gray-500 mb-6">Essayez avec d'autres filtres ou <%= link_to "réinitialisez la recherche", players_path, class: "text-[#c8aa6e] hover:underline" %></p>
-                    <% else %>
-                        <p class="text-gray-400 text-xl mb-4">Aucun joueur trouvé</p>
-                        <p class="text-gray-500 mb-6">Commencez par ajouter des joueurs à votre tournoi</p>
-                    <% end %>
-                </div>
+            </div>
             <% end %>
         </div>
+        <% else %>
+        <div class="text-center py-8">
+            <!-- SVG pour état vide -->
+            <svg class="h-16 w-16 mx-auto text-gray-500 mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M8 15h8M9 9h.01M15 9h.01" />
+            </svg>
+            <% if @search_term.present? || @selected_role.present? || @selected_team.present? %>
+            <p class="text-gray-400 text-xl mb-4">Aucun joueur ne correspond à ces critères</p>
+            <p class="text-gray-500 mb-6">Essayez avec d'autres filtres ou <%= link_to "réinitialisez la recherche", players_path, class: "text-[#c8aa6e] hover:underline" %></p>
+            <% else %>
+            <p class="text-gray-400 text-xl mb-4">Aucun joueur trouvé</p>
+            <p class="text-gray-500 mb-6">Commencez par ajouter des joueurs à votre tournoi</p>
+            <% end %>
+        </div>
+        <% end %>
     </div>
+</div>
 </div>

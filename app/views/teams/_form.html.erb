@@ -25,8 +25,8 @@
             placeholder: "Entrez le nom de l'équipe" %>
         </div>
 
-        <div class="flex justify-center">
-            <%= form.submit class: "lol-btn lol-btn-primary px-6 py-2" %>
+        <div class="flex justify-center space-x-4 mt-6">
+            <%= form.submit @team.new_record? ? "Créer l'équipe" : "Modifier l'équipe", class: "lol-btn lol-btn-primary" %>
         </div>
     </div>
 </div>

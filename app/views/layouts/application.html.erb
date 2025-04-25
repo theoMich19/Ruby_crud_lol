@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Tournoi League of Legends</title>
+    <title>LoL Tournament Manager</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -18,31 +18,36 @@
 
 <body>
     <!-- Navigation Bar -->
-    <nav class="lol-nav flex items-center justify-between px-6 py-4">
-        <div class="flex items-center">
-            <div class="mr-2">
-                <%= image_tag "https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/fr-fr/production/fr-fr/static/logo-light-0529a8eb99.svg", class: "h-12", alt: "League of Legends Logo" %>
+    <nav class="lol-nav">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="mr-2">
+                        <%= image_tag "logo.png", class: "h-12", alt: "League of Legends Logo" %>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a class="lol-nav-link no-underline" href="<%= root_path %>">Dashboard</a>
+                    <a class="lol-nav-link no-underline" href="<%= teams_path %>">Équipes</a>
+                    <a class="lol-nav-link no-underline" href="<%= players_path %>">Joueurs</a>
+                    <a class="lol-nav-link no-underline" href="<%= matches_path %>">Matchs</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menuBtn" class="lol-btn py-1 px-2">Menu</button>
+                </div>
             </div>
-            <a class="lol-brand ml-4 no-underline" href="<%= root_path %>">TOURNOI MANAGER</a>
-        </div>
-        <div class="hidden md:flex space-x-8">
-            <a class="lol-nav-link no-underline" href="<%= root_path %>">Dashboard</a>
-            <a class="lol-nav-link no-underline" href="<%= teams_path %>">Équipes</a>
-            <a class="lol-nav-link no-underline" href="<%= players_path %>">Joueurs</a>
-            <a class="lol-nav-link no-underline" href="<%= matches_path %>">Matchs</a>
-        </div>
-        <div class="md:hidden">
-            <button id="menuBtn" class="lol-btn py-1 px-2">Menu</button>
         </div>
     </nav>
 
     <!-- Menu mobile -->
     <div id="mobileMenu" class="hidden md:hidden bg-black bg-opacity-95 w-full px-4 py-2 border-b border-gray-800">
-        <div class="flex flex-col space-y-3 py-2">
-            <a class="lol-nav-link no-underline" href="<%= root_path %>">Dashboard</a>
-            <a class="lol-nav-link no-underline" href="<%= teams_path %>">Équipes</a>
-            <a class="lol-nav-link no-underline" href="<%= players_path %>">Joueurs</a>
-            <a class="lol-nav-link no-underline" href="<%= matches_path %>">Matchs</a>
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col space-y-3 py-2">
+                <a class="lol-nav-link no-underline" href="<%= root_path %>">Dashboard</a>
+                <a class="lol-nav-link no-underline" href="<%= teams_path %>">Équipes</a>
+                <a class="lol-nav-link no-underline" href="<%= players_path %>">Joueurs</a>
+                <a class="lol-nav-link no-underline" href="<%= matches_path %>">Matchs</a>
+            </div>
         </div>
     </div>
 
