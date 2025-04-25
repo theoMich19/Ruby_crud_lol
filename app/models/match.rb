@@ -2,6 +2,8 @@ class Match < ApplicationRecord
   belongs_to :first_team, class_name: 'Team'
   belongs_to :second_team, class_name: 'Team'
   has_one :result, dependent: :destroy
+  has_many :match_players, dependent: :destroy
+  has_many :players, through: :match_players
   
   enum status: { upcoming: 0, in_progress: 1, completed: 2, cancelled: 3 }
 
@@ -23,6 +25,11 @@ class Match < ApplicationRecord
 
   def completed!
     update!(status: :completed)
+  end
+
+  def winner
+    return nil unless result.present?
+    result.winner
   end
 
   private

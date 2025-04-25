@@ -6,15 +6,23 @@ class PlayersController < ApplicationController
     @players = Player.all
     
     # Filtre par rôle
-    if params[:role].present? && params[:role] != ""
-      @players = @players.where(role: params[:role])
+    if params[:role].present?
+      if params[:role] == "none"
+        @players = @players.where(role: [nil, ""])
+      else
+        @players = @players.where(role: params[:role])
+      end
     end
-    
+
     # Filtre par équipe
-    if params[:team_id].present? && params[:team_id] != ""
-      @players = @players.where(team_id: params[:team_id])
+    if params[:team_id].present?
+      if params[:team_id] == "none"
+        @players = @players.where(team_id: nil)
+      else
+        @players = @players.where(team_id: params[:team_id])
+      end
     end
-    
+
     # Recherche par nom/prénom
     if params[:search].present?
       search_term = "%#{params[:search]}%"
@@ -70,8 +78,15 @@ class PlayersController < ApplicationController
 
   # DELETE /players/1 or /players/1.json
   def destroy
-    @player.destroy!
-    redirect_to players_path, status: :see_other, notice: "Player was successfully destroyed."
+    if @player.team.present? && @player.team.matches.any?
+      redirect_to @player, alert: "Impossible de supprimer ce joueur car son équipe est associée à des matchs. Veuillez d'abord supprimer ou modifier ces matchs."
+    else
+      @player.destroy
+      respond_to do |format|
+        format.html { redirect_to players_url, notice: "Le joueur a été supprimé avec succès." }
+        format.json { head :no_content }
+      end
+    end
   end
 
   private

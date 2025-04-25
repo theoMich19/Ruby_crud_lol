@@ -4,8 +4,8 @@
     <%= render "form", team: @team %>
 
     <div class="flex justify-between mt-6">
-        <%= link_to "Show this team", @team, class: "lol-btn" %>
-        <%= link_to "Back to teams", teams_path, class: "lol-btn" %>
-        <%= button_to "Delete cette équipe", @team, method: :delete, class: "lol-btn bg-red-600 hover:bg-red-500 px-6 py-2", data: { turbo_confirm: "Êtes-vous sûr ?" } %>
+        <%= link_to "Voir détails", @team, class: "lol-btn" %>
+        <%= link_to "Retour aux équipes", teams_path, class: "lol-btn" %>
+        <%= button_to "Supprimer cette équipe", @team, method: :delete, class: "lol-btn bg-red-600 hover:bg-red-500 px-6 py-2", data: { turbo_confirm: "Êtes-vous sûr ?" } %>
     </div>
 </div>
