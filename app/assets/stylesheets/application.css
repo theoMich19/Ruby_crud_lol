@@ -105,6 +105,7 @@ body:before {
 }
 
 .lol-btn:hover {
+  cursor: pointer;
   background-color: #c8aa6e;
   color: #1e2328;
   box-shadow: 0 0 10px rgba(200, 170, 110, 0.5);
