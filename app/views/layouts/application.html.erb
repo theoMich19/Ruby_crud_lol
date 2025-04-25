@@ -23,7 +23,9 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <div class="mr-2">
-                        <%= image_tag "logo.png", class: "h-12", alt: "League of Legends Logo" %>
+                        <%= link_to root_path do %>
+                        <%= image_tag "logo.png", class: "h-12 cursor-pointer", alt: "League of Legends Logo" %>
+                        <% end %>
                     </div>
                 </div>
                 <div class="hidden md:flex space-x-8">
