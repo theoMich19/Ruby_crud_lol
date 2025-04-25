@@ -16,6 +16,10 @@ class Player < ApplicationRecord
 
   before_save :capitalize_names
 
+  def self.without_team
+    where(team_id: nil)
+  end
+
   def formatted_role
     return 'Non défini' if role.nil?
 

@@ -32,6 +32,32 @@
         </div>
     </div>
 
+    <!-- Ajouter un joueur -->
+    <div class="lol-container p-6 mb-8">
+        <div class="lol-header p-3 mb-4">
+            <h2 class="text-xl font-semibold text-center">Ajouter un joueur</h2>
+        </div>
+
+        <div class="p-4">
+            <% if Player.without_team.any? %>
+            <%= form_with(url: add_player_team_path(@team), method: :patch, class: "flex flex-col md:flex-row gap-4 items-end") do |form| %>
+            <div class="flex-1">
+                <%= form.label :player_id, "Sélectionner un joueur", class: "block text-lg font-medium mb-2" %>
+                <%= form.collection_select :player_id, 
+                            Player.without_team, 
+                            :id, 
+                            ->(player) { "#{player.first_name} #{player.last_name} (#{player.formatted_role})" },
+                            { include_blank: 'Sélectionner un joueur' }, 
+                            class: "block w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-3 text-[#f0e6d2] appearance-none focus:outline-none focus:border-[#c8aa6e] focus:ring focus:ring-[#c8aa6e] focus:ring-opacity-20" %>
+            </div>
+            <%= form.submit "Ajouter à l'équipe", class: "lol-btn lol-btn-primary py-3 px-6" %>
+            <% end %>
+            <% else %>
+            <p class="text-center text-gray-300">Aucun joueur disponible sans équipe</p>
+            <% end %>
+        </div>
+    </div>
+
     <!-- Liste des joueurs -->
     <div class="lol-container p-6 mb-8">
         <div class="lol-header p-3 mb-4">
@@ -41,7 +67,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <% if @team.players.any? %>
             <% @team.players.each do |player| %>
-            <div class="lol-container p-4">
+            <div class="lol-container p-4 relative">
+                <%= button_to remove_player_team_path(@team, player_id: player.id), 
+                    method: :patch, 
+                    class: "absolute top-2 right-2 text-red-500 hover:text-red-400 transition-colors" do %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                <% end %>
                 <h3 class="text-lg font-semibold mb-2"><%= player.first_name %> <%= player.last_name %></h3>
                 <p class="text-sm text-gray-300 mb-3">Rôle : <%= player.formatted_role %></p>
                 <div class="flex space-x-2">

@@ -1,5 +1,5 @@
 class MatchesController < ApplicationController
-  before_action :set_match, only: %i[ show edit update destroy start ]
+  before_action :set_match, only: %i[ show edit update destroy start cancel ]
 
   # GET /matches or /matches.json
   def index
@@ -36,6 +36,15 @@ class MatchesController < ApplicationController
       redirect_to @match, notice: "Le match a commencé."
     else
       redirect_to @match, alert: "Impossible de démarrer le match."
+    end
+  end
+
+  def cancel
+    if @match.upcoming? || @match.in_progress?
+      @match.update!(status: :cancelled)
+      redirect_to @match, notice: "Le match a été annulé."
+    else
+      redirect_to @match, alert: "Impossible d'annuler le match."
     end
   end
 

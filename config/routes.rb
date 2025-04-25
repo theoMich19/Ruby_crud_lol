@@ -2,13 +2,19 @@ Rails.application.routes.draw do
   root "dashboard#index"
   get 'dashboard/index'
 
-  resources :teams
+  resources :teams do
+    member do
+      patch 'add_player'
+      patch 'remove_player'
+    end
+  end
   resources :players
   resources :results
   resources :matches do
     member do
       get :teams
-      post :start
+      patch :start
+      patch :cancel
     end
     resources :results, only: [:new, :create, :edit, :update]
   end

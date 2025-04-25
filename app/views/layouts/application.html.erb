@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>Tournoi League of Legends</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
@@ -13,73 +14,76 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Beaufort+for+LOL:wght@400;500;700&display=swap" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body>
+<body>
     <!-- Navigation Bar -->
     <nav class="lol-nav flex items-center justify-between px-6 py-4">
-      <div class="flex items-center">
-        <div class="mr-2">
-          <%= image_tag "https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/fr-fr/production/fr-fr/static/logo-light-0529a8eb99.svg", class: "h-12", alt: "League of Legends Logo" %>
+        <div class="flex items-center">
+            <div class="mr-2">
+                <%= image_tag "https://lolstatic-a.akamaihd.net/frontpage/apps/prod/harbinger-l10-website/fr-fr/production/fr-fr/static/logo-light-0529a8eb99.svg", class: "h-12", alt: "League of Legends Logo" %>
+            </div>
+            <a class="lol-brand ml-4 no-underline" href="<%= root_path %>">TOURNOI MANAGER</a>
         </div>
-        <a class="lol-brand ml-4 no-underline" href="<%= root_path %>">TOURNOI MANAGER</a>
-      </div>
-      <div class="hidden md:flex space-x-8">
-        <a class="lol-nav-link no-underline" href="<%= root_path %>">Dashboard</a>
-        <a class="lol-nav-link no-underline" href="<%= teams_path %>">Équipes</a>
-        <a class="lol-nav-link no-underline" href="<%= players_path %>">Joueurs</a>
-        <a class="lol-nav-link no-underline" href="<%= matches_path %>">Matchs</a>
-      </div>
-      <div class="md:hidden">
-        <button id="menuBtn" class="lol-btn py-1 px-2">Menu</button>
-      </div>
+        <div class="hidden md:flex space-x-8">
+            <a class="lol-nav-link no-underline" href="<%= root_path %>">Dashboard</a>
+            <a class="lol-nav-link no-underline" href="<%= teams_path %>">Équipes</a>
+            <a class="lol-nav-link no-underline" href="<%= players_path %>">Joueurs</a>
+            <a class="lol-nav-link no-underline" href="<%= matches_path %>">Matchs</a>
+        </div>
+        <div class="md:hidden">
+            <button id="menuBtn" class="lol-btn py-1 px-2">Menu</button>
+        </div>
     </nav>
-    
+
     <!-- Menu mobile -->
     <div id="mobileMenu" class="hidden md:hidden bg-black bg-opacity-95 w-full px-4 py-2 border-b border-gray-800">
-      <div class="flex flex-col space-y-3 py-2">
-        <a class="lol-nav-link no-underline" href="<%= root_path %>">Dashboard</a>
-        <a class="lol-nav-link no-underline" href="<%= teams_path %>">Équipes</a>
-        <a class="lol-nav-link no-underline" href="<%= players_path %>">Joueurs</a>
-        <a class="lol-nav-link no-underline" href="<%= matches_path %>">Matchs</a>
-      </div>
+        <div class="flex flex-col space-y-3 py-2">
+            <a class="lol-nav-link no-underline" href="<%= root_path %>">Dashboard</a>
+            <a class="lol-nav-link no-underline" href="<%= teams_path %>">Équipes</a>
+            <a class="lol-nav-link no-underline" href="<%= players_path %>">Joueurs</a>
+            <a class="lol-nav-link no-underline" href="<%= matches_path %>">Matchs</a>
+        </div>
     </div>
 
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <% if notice %>
-        <div class="lol-alert-success p-4 mb-6 rounded">
-          <%= notice %>
+    <div class="main-content">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <% if notice %>
+            <div class="lol-alert-success p-4 mb-6 rounded">
+                <%= notice %>
+            </div>
+            <% end %>
+            <% if alert %>
+            <div class="lol-alert-danger p-4 mb-6 rounded">
+                <%= alert %>
+            </div>
+            <% end %>
+
+            <%= yield %>
         </div>
-      <% end %>
-      <% if alert %>
-        <div class="lol-alert-danger p-4 mb-6 rounded">
-          <%= alert %>
-        </div>
-      <% end %>
-      
-      <%= yield %>
     </div>
 
     <!-- Footer -->
-    <footer class="lol-footer py-4 mt-10">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="text-gray-500">© <%= Date.today.year %> LoL Tournament Manager</span>
-      </div>
+    <footer class="lol-footer py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <span class="text-gray-500">© <%= Date.today.year %> LoL Tournament Manager</span>
+        </div>
     </footer>
 
     <script>
-      // Toggle mobile menu
-      document.addEventListener('DOMContentLoaded', function() {
-        const menuBtn = document.getElementById('menuBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        
-        if (menuBtn && mobileMenu) {
-          menuBtn.addEventListener('click', function() {
-            mobileMenu.classList.toggle('hidden');
-          });
-        }
-      });
+        // Toggle mobile menu
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
     </script>
-  </body>
+</body>
+
 </html>

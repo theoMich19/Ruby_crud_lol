@@ -17,6 +17,14 @@ class Match < ApplicationRecord
     date.present? && upcoming?
   end
 
+  def in_progress!
+    update!(status: :in_progress)
+  end
+
+  def completed!
+    update!(status: :completed)
+  end
+
   private
 
   def different_teams

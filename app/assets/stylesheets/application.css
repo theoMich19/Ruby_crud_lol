@@ -15,6 +15,12 @@
  */
 
 /* Styles globaux LOL */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: "Beaufort for LOL", "Beaufort", "Times New Roman", serif;
   background-color: #02101f;
@@ -26,6 +32,9 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Superposition sombre pour améliorer la lisibilité */
@@ -114,6 +123,13 @@ body:before {
 .lol-footer {
   background-color: rgba(0, 0, 0, 0.8);
   border-top: 1px solid #3c3c41;
+  margin-top: auto;
+  width: 100%;
+}
+
+/* Conteneur principal */
+.main-content {
+  flex: 1;
 }
 
 /* Tableaux */

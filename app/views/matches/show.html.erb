@@ -4,17 +4,30 @@
     <div class="lol-header p-3 flex justify-between items-center">
         <h1 class="text-2xl font-semibold">Détails du Match</h1>
 
-        <% if @match.status == "upcoming" && @match.date.present? %>
-        <%= button_to start_match_path(@match), method: :patch, class: "lol-btn lol-btn-primary" do %>
-        <div class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Démarrer le match
+        <div class="flex gap-2">
+            <% if @match.status == "upcoming" && @match.date.present? %>
+            <%= button_to start_match_path(@match), method: :patch, class: "lol-btn lol-btn-primary" do %>
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Démarrer le match
+            </div>
+            <% end %>
+            <% end %>
+
+            <% if @match.status == "upcoming" || @match.status == "in_progress" %>
+            <%= button_to cancel_match_path(@match), method: :patch, class: "lol-btn bg-red-900 border-red-700 hover:bg-red-800", data: { turbo_confirm: "Êtes-vous sûr de vouloir annuler ce match ?" } do %>
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Annuler le match
+            </div>
+            <% end %>
+            <% end %>
         </div>
-        <% end %>
-        <% end %>
     </div>
 
     <div class="p-6">
@@ -38,6 +51,8 @@
                 <span class="ml-3 px-2 py-0.5 bg-blue-900 bg-opacity-30 rounded-full text-xs text-blue-300 border border-blue-800">En cours</span>
                 <% when "completed" %>
                 <span class="ml-3 px-2 py-0.5 bg-green-900 bg-opacity-30 rounded-full text-xs text-green-500 border border-green-800">Terminé</span>
+                <% when "cancelled" %>
+                <span class="ml-3 px-2 py-0.5 bg-red-900 bg-opacity-30 rounded-full text-xs text-red-500 border border-red-800">Annulé</span>
                 <% end %>
                 <% end %>
             </div>
@@ -174,7 +189,7 @@
     </div>
     <% end %>
 
-    <% unless @match.status == "completed" %>
+    <% unless @match.status == "completed" || @match.status == "in_progress" || @match.status == "cancelled" %>
     <%= link_to edit_match_path(@match), class: "lol-btn" do %>
     <div class="flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
