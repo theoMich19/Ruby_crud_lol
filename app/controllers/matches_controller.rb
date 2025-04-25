@@ -1,9 +1,20 @@
 class MatchesController < ApplicationController
-  before_action :set_match, only: %i[ show edit update destroy start ]
+  before_action :set_match, only: %i[ show edit update destroy start cancel ]
 
   # GET /matches or /matches.json
   def index
-    @matches = Match.all
+    # Filtrage par statut
+    if params[:status].present? && Match.statuses.keys.include?(params[:status])
+      @matches = Match.where(status: params[:status])
+    else
+      @matches = Match.all
+    end
+
+    # Tri des matchs du plus récent au plus ancien par date
+    @matches = @matches.order(date: :desc)
+    
+    # Statut actif pour les filtres
+    @active_status = params[:status] || "all"
   end
 
   # GET /matches/1 or /matches/1.json
@@ -25,6 +36,15 @@ class MatchesController < ApplicationController
       redirect_to @match, notice: "Le match a commencé."
     else
       redirect_to @match, alert: "Impossible de démarrer le match."
+    end
+  end
+
+  def cancel
+    if @match.upcoming? || @match.in_progress?
+      @match.update!(status: :cancelled)
+      redirect_to @match, notice: "Le match a été annulé."
+    else
+      redirect_to @match, alert: "Impossible d'annuler le match."
     end
   end
 

@@ -4,6 +4,28 @@ class PlayersController < ApplicationController
   # GET /players or /players.json
   def index
     @players = Player.all
+    
+    # Filtre par rôle
+    if params[:role].present? && params[:role] != ""
+      @players = @players.where(role: params[:role])
+    end
+    
+    # Filtre par équipe
+    if params[:team_id].present? && params[:team_id] != ""
+      @players = @players.where(team_id: params[:team_id])
+    end
+    
+    # Recherche par nom/prénom
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @players = @players.where("lower(first_name) LIKE ? OR lower(last_name) LIKE ?", 
+                               search_term.downcase, search_term.downcase)
+    end
+    
+    # Pour l'affichage actif dans les filtres
+    @selected_role = params[:role]
+    @selected_team = params[:team_id]
+    @search_term = params[:search]
   end
 
   # GET /players/1 or /players/1.json

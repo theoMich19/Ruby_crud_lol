@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  before_action :set_team, only: %i[ show edit update destroy ]
+  before_action :set_team, only: %i[ show edit update destroy add_player remove_player ]
 
   # GET /teams or /teams.json
   def index
@@ -23,26 +23,56 @@ class TeamsController < ApplicationController
   def create
     @team = Team.new(team_params)
 
-    if @team.save
-      redirect_to @team, notice: "Team was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    respond_to do |format|
+      if @team.save
+        format.html { redirect_to team_url(@team), notice: "Team was successfully created." }
+        format.json { render :show, status: :created, location: @team }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @team.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   # PATCH/PUT /teams/1 or /teams/1.json
   def update
-    if @team.update(team_params)
-      redirect_to @team, notice: "Team was successfully updated."
-    else
-      render :edit, status: :unprocessable_entity
+    respond_to do |format|
+      if @team.update(team_params)
+        format.html { redirect_to team_url(@team), notice: "Team was successfully updated." }
+        format.json { render :show, status: :ok, location: @team }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @team.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   # DELETE /teams/1 or /teams/1.json
   def destroy
     @team.destroy!
-    redirect_to teams_path, status: :see_other, notice: "Team was successfully destroyed."
+
+    respond_to do |format|
+      format.html { redirect_to teams_url, notice: "Team was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  def add_player
+    player = Player.find(params[:player_id])
+    if player.update(team: @team)
+      redirect_to @team, notice: "Le joueur a été ajouté à l'équipe avec succès."
+    else
+      redirect_to @team, alert: "Impossible d'ajouter le joueur à l'équipe."
+    end
+  end
+
+  def remove_player
+    player = Player.find(params[:player_id])
+    if player.update(team: nil)
+      redirect_to @team, notice: "Le joueur a été retiré de l'équipe avec succès."
+    else
+      redirect_to @team, alert: "Impossible de retirer le joueur de l'équipe."
+    end
   end
 
   private
