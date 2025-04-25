@@ -3,7 +3,18 @@ class MatchesController < ApplicationController
 
   # GET /matches or /matches.json
   def index
-    @matches = Match.all
+    # Filtrage par statut
+    if params[:status].present? && Match.statuses.keys.include?(params[:status])
+      @matches = Match.where(status: params[:status])
+    else
+      @matches = Match.all
+    end
+
+    # Tri des matchs du plus récent au plus ancien par date
+    @matches = @matches.order(date: :desc)
+    
+    # Statut actif pour les filtres
+    @active_status = params[:status] || "all"
   end
 
   # GET /matches/1 or /matches/1.json
