@@ -54,7 +54,7 @@ class MatchesController < ApplicationController
     @match.status = :upcoming
 
     if @match.save
-      redirect_to @match, notice: "Match was successfully created."
+      redirect_to @match, notice: "Le match a été créé avec succès."
     else
       render :new, status: :unprocessable_entity
     end
@@ -63,7 +63,7 @@ class MatchesController < ApplicationController
   # PATCH/PUT /matches/1 or /matches/1.json
   def update
     if @match.update(match_params)
-      redirect_to @match, notice: "Match was successfully updated."
+      redirect_to @match, notice: "Le match a été modifié avec succès."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -72,7 +72,7 @@ class MatchesController < ApplicationController
   # DELETE /matches/1 or /matches/1.json
   def destroy
     @match.destroy!
-    redirect_to matches_path, status: :see_other, notice: "Match was successfully destroyed."
+    redirect_to matches_path, status: :see_other, notice: "Le match a été supprimé avec succès."
   end
 
   private

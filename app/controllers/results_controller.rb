@@ -1,18 +1,6 @@
 class ResultsController < ApplicationController
-  before_action :set_result, only: %i[ show edit update destroy ]
+  before_action :set_result, only: %i[ edit update ]
   before_action :set_match, only: %i[ new create ]
-
-  # GET /results or /results.json
-  def index
-    @results = Result.includes(match: [:first_team, :second_team])
-            .joins(:match)
-            .order('matches.date DESC')
-  end
-
-  # GET /results/1 or /results/1.json
-  def show
-    @match = @result.match
-  end
 
   # GET /results/1/edit
   def edit
@@ -64,12 +52,6 @@ class ResultsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  # DELETE /results/1 or /results/1.json
-  def destroy
-    @result.destroy!
-    redirect_to results_url, notice: "Le résultat a été supprimé avec succès."
   end
 
   private

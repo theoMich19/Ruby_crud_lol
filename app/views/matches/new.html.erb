@@ -1,25 +1,35 @@
 <% content_for :title, "Nouveau match" %>
 
-<div class="lol-container p-6 mb-8">
-    <h1 class="text-3xl font-bold text-center">NOUVEAU MATCH</h1>
-    <p class="text-center text-xl mt-2 text-gray-400">Saison 2025</p>
-</div>
-
-<div class="lol-container max-w-3xl mx-auto mb-8">
-    <div class="lol-header p-3">
-        <h2 class="text-xl font-semibold text-center">Programmer un match</h2>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="lol-container mb-8">
+    <div class="lol-header p-3 relative">
+      <!-- Titre centré -->
+      <h2 class="text-xl font-semibold text-center">Programmer un match</h2>
+      
+      <!-- Bouton retour positionné de manière absolue -->
+      <div class="absolute left-3 top-1/2 transform -translate-y-1/2">
+        <%= link_to matches_path, class: "lol-btn py-2 px-3 text-sm flex items-center justify-center" do %>
+          <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Retour
+        <% end %>
+      </div>
     </div>
     
     <div class="p-6">
-        <%= render "form", match: @match %>
-        
-        <div class="mt-6 text-center">
-            <%= link_to matches_path, class: "lol-btn py-2 px-4 flex items-center justify-center mx-auto" do %>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Retour à la liste
-            <% end %>
+      <!-- Section d'information -->
+      <div class="bg-[#091428] bg-opacity-70 border border-[#3c3c41] rounded-md p-4 mb-6">
+        <div class="flex items-center text-[#c8aa6e]">
+          <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4M12 8h.01" />
+          </svg>
+          <span class="text-sm">Créez un match en sélectionnant deux équipes différentes avec au moins un joueur chacune.</span>
         </div>
+      </div>
+      
+      <%= render "form", match: @match %>
     </div>
+  </div>
 </div>

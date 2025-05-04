@@ -1,193 +1,50 @@
-<div id="<%= dom_id player %>" class="space-y-6">
-  <!-- Équipe du joueur -->
-  <% if player.team.present? %>
-    <div class="bg-[#091428] bg-opacity-70 border border-[#3c3c41] rounded-md p-4">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center">
-          <svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <circle cx="9" cy="9" r="4" stroke-width="2"/>
-            <circle cx="15" cy="15" r="4" stroke-width="2"/>
-          </svg>
-          <span class="text-sm uppercase tracking-wider text-gray-400">Équipe</span>
-        </div>
-        
-        <%= link_to player.team, class: "flex items-center group" do %>
-          <span class="text-[#c8aa6e] text-lg font-semibold group-hover:text-[#f0e6d2] transition-colors">
-            <%= player.team.name %>
-          </span>
-          <svg class="h-4 w-4 ml-1 text-[#c8aa6e] opacity-0 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
+<%= form_with(model: player, class: "contents") do |form| %>
+<% if player.errors.any? %>
+<div id="error_explanation" class="lol-alert-danger px-4 py-3 rounded-md mb-6">
+    <h2 class="font-bold text-lg mb-2"><%= pluralize(player.errors.count, "erreur") %> :</h2>
+    <ul class="list-disc ml-6">
+        <% player.errors.each do |error| %>
+        <li><%= error.full_message %></li>
         <% end %>
-      </div>
-      
-      <!-- Statistiques de l'équipe -->
-      <div class="grid grid-cols-3 gap-4 mt-4">
-        <div class="text-center">
-          <p class="text-xs text-gray-400 uppercase">Joueurs</p>
-          <p class="text-[#f0e6d2] font-semibold"><%= player.team.players.count %>/5</p>
-        </div>
-        <div class="text-center">
-          <p class="text-xs text-gray-400 uppercase">Matchs</p>
-          <p class="text-[#f0e6d2] font-semibold"><%= player.team.matches.count %></p>
-        </div>
-        <div class="text-center">
-          <p class="text-xs text-gray-400 uppercase">Victoires</p>
-          <% win_count = player.team.matches.joins(:result).where("(matches.first_team_id = ? AND results.first_team_score > results.second_team_score) OR (matches.second_team_id = ? AND results.second_team_score > results.first_team_score)", player.team.id, player.team.id).count %>
-          <p class="text-[#f0e6d2] font-semibold"><%= win_count %></p>
-        </div>
-      </div>
-    </div>
-  <% else %>
-    <div class="bg-[#091428] bg-opacity-70 border border-[#3c3c41] rounded-md p-4">
-      <div class="flex items-center">
-        <svg class="h-5 w-5 text-gray-500 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <circle cx="9" cy="9" r="4" stroke-width="2"/>
-          <circle cx="15" cy="15" r="4" stroke-width="2"/>
-        </svg>
-        <span class="text-sm uppercase tracking-wider text-gray-400">Équipe</span>
-      </div>
-      <p class="text-gray-500 mt-2 italic">Ce joueur n'appartient à aucune équipe</p>
-    </div>
-  <% end %>
-
-  <!-- Grid principal d'informations -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <!-- Informations personnelles -->
-    <div class="bg-[#091428] bg-opacity-70 border border-[#3c3c41] rounded-md p-5">
-      <h4 class="text-lg font-semibold text-[#c8aa6e] mb-4 pb-2 border-b border-[#3c3c41]">
-        Informations personnelles
-      </h4>
-      
-      <div class="space-y-4">
-        <div class="flex">
-          <div class="w-1/3">
-            <p class="text-sm text-gray-400">Nom</p>
-          </div>
-          <div class="w-2/3">
-            <p class="text-[#f0e6d2] font-medium"><%= player.last_name %></p>
-          </div>
-        </div>
-        
-        <div class="flex">
-          <div class="w-1/3">
-            <p class="text-sm text-gray-400">Prénom</p>
-          </div>
-          <div class="w-2/3">
-            <p class="text-[#f0e6d2] font-medium"><%= player.first_name %></p>
-          </div>
-        </div>
-        
-        <div class="flex">
-          <div class="w-1/3">
-            <p class="text-sm text-gray-400">Nom complet</p>
-          </div>
-          <div class="w-2/3">
-            <p class="text-[#f0e6d2] font-medium"><%= player.first_name %> <%= player.last_name %></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Informations de jeu -->
-    <div class="bg-[#091428] bg-opacity-70 border border-[#3c3c41] rounded-md p-5">
-      <h4 class="text-lg font-semibold text-[#c8aa6e] mb-4 pb-2 border-b border-[#3c3c41]">
-        Informations de jeu
-      </h4>
-      
-      <div class="space-y-4">
-        <div class="flex">
-          <div class="w-1/3">
-            <p class="text-sm text-gray-400">Rôle</p>
-          </div>
-          <div class="w-2/3">
-            <div class="flex items-center">
-              <% role_icon = case player.role 
-                 when "Top laner" 
-                 %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 6L6 12L12 18L18 12L12 6Z"/></svg><%
-                 when "Jungler" 
-                 %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 6L8 10H16L12 6Z"/><path fill="white" d="M12 18L16 14H8L12 18Z"/></svg><%
-                 when "Mid laner" 
-                 %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M12 12L6 6L18 18L12 12Z"/><path fill="white" d="M12 12L18 6L6 18L12 12Z"/></svg><%
-                 when "ADC" 
-                 %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M7 12H17M12 7V17"/></svg><%
-                 when "Support" 
-                 %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path fill="white" d="M8 9H16M12 8V16M9 16H15"/></svg><%
-                 else 
-                 %><svg class="h-5 w-5 text-[#c8aa6e] mr-2" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg><%
-                 end %>
-              <p class="text-[#f0e6d2] font-medium"><%= player.formatted_role || player.role %></p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="flex">
-          <div class="w-1/3">
-            <p class="text-sm text-gray-400">ID Joueur</p>
-          </div>
-          <div class="w-2/3">
-            <p class="text-[#f0e6d2] font-medium">#<%= player.id %></p>
-          </div>
-        </div>
-        
-        <div class="flex">
-          <div class="w-1/3">
-            <p class="text-sm text-gray-400">Matchs joués</p>
-          </div>
-          <div class="w-2/3">
-            <% if player.team.present? %>
-              <% match_count = player.team.matches.count %>
-              <p class="text-[#f0e6d2] font-medium"><%= match_count %></p>
-            <% else %>
-              <p class="text-gray-500 italic">Aucun match</p>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Historique des matchs - Affiché uniquement si le joueur a une équipe -->
-  <% if player.team.present? && player.team.matches.any? %>
-    <div class="bg-[#091428] bg-opacity-70 border border-[#3c3c41] rounded-md p-5">
-      <h4 class="text-lg font-semibold text-[#c8aa6e] mb-4 pb-2 border-b border-[#3c3c41]">
-        Derniers matchs
-      </h4>
-      
-      <div class="space-y-3">
-        <% player.team.matches.order(date: :desc).limit(3).each do |match| %>
-          <div class="border border-[#3c3c41] bg-black bg-opacity-30 rounded-md p-3">
-            <div class="flex justify-between items-center">
-              <div class="flex items-center">
-                <span class="<%= match.first_team == player.team ? 'text-[#c8aa6e] font-semibold' : 'text-gray-400' %>">
-                  <%= match.first_team.name %>
-                </span>
-                <span class="mx-2 text-gray-500">vs</span>
-                <span class="<%= match.second_team == player.team ? 'text-[#c8aa6e] font-semibold' : 'text-gray-400' %>">
-                  <%= match.second_team.name %>
-                </span>
-              </div>
-              
-              <% if match.result.present? %>
-                <div class="flex items-center">
-                  <span class="text-sm <%= match.winner == player.team ? 'text-green-500' : 'text-red-500' %>">
-                    <%= match.winner == player.team ? 'Victoire' : 'Défaite' %>
-                  </span>
-                  <span class="text-gray-400 mx-2">
-                    <%= match.result.first_team_score %> - <%= match.result.second_team_score %>
-                  </span>
-                </div>
-              <% else %>
-                <span class="text-sm text-yellow-500">À venir</span>
-              <% end %>
-            </div>
-            
-            <div class="text-xs text-gray-500 mt-1">
-              <%= match.date.strftime("%d/%m/%Y") if match.date.present? %>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
+    </ul>
 </div>
+<% end %>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <!-- Prénom -->
+    <div>
+        <strong class="block text-lg font-medium mb-2">Prénom:</strong>
+        <div class="block w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-3 text-[#f0e6d2]">
+            <%= player.first_name %>
+        </div>
+    </div>
+
+    <!-- Nom -->
+    <div>
+        <strong class="block text-lg font-medium mb-2">Nom:</strong>
+        <div class="block w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-3 text-[#f0e6d2]">
+            <%= player.last_name %>
+        </div>
+    </div>
+</div>
+
+<!-- Rôle -->
+<div class="mb-6">
+    <strong class="block text-lg font-medium mb-2">Rôle:</strong>
+    <div class="block w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-3 text-[#f0e6d2]">
+        <%= player.formatted_role %>
+    </div>
+</div>
+
+<!-- Équipe -->
+<div class="mb-6">
+    <strong class="block text-lg font-medium mb-2">Équipe:</strong>
+    <div class="block w-full bg-[#1e2328] border border-[#3c3c41] rounded-md px-4 py-3 text-[#f0e6d2]">
+        <% if player.team.present? %>
+        <%= link_to player.team.name, team_path(player.team), class: "hover:text-[#c8aa6e] transition-colors" %>
+        <% else %>
+        Aucune équipe
+        <% end %>
+    </div>
+</div>
+<% end %>

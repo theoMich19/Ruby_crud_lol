@@ -1,25 +1,63 @@
 <% content_for :title, "Modifier le match" %>
 
-<div class="lol-container p-6 mb-8">
-    <h1 class="text-3xl font-bold text-center">MODIFIER LE MATCH</h1>
-    <p class="text-center text-xl mt-2 text-gray-400">Saison 2025</p>
-</div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="lol-container mb-8">
+        <div class="lol-header p-3 relative">
+            <!-- Titre centré -->
+            <h2 class="text-xl font-semibold text-center">
+                Modifier le match: <%= @match.first_team.name %> vs <%= @match.second_team.name %>
+            </h2>
+        </div>
 
-<div class="lol-container max-w-3xl mx-auto mb-8">
-    <div class="lol-header p-3">
-        <h2 class="text-xl font-semibold text-center">Modifier les informations du match</h2>
-    </div>
+        <div class="p-6">
+            <!-- Section d'information -->
+            <div class="bg-[#091428] bg-opacity-70 border border-[#3c3c41] rounded-md p-4 mb-6">
+                <div class="flex items-center text-[#c8aa6e]">
+                    <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 16v-4M12 8h.01" />
+                    </svg>
+                    <span class="text-sm">
+                        Modifiez les informations de ce match entre <%= @match.first_team.name %> (<%= @match.first_team.players.count %> joueur<%= @match.first_team.players.count != 1 ? 's' : '' %>) et
+                        <%= @match.second_team.name %> (<%= @match.second_team.players.count %> joueur<%= @match.second_team.players.count != 1 ? 's' : '' %>).
+                        <% if @match.date.present? %>
+                        Le match est actuellement programmé pour le <%= @match.date.strftime("%d/%m/%Y à %H:%M") %>.
+                        <% else %>
+                        Aucune date n'est actuellement programmée pour ce match.
+                        <% end %>
+                    </span>
+                </div>
+            </div>
 
-    <div class="p-6">
-        <%= render "form", match: @match %>
+            <%= render "form", match: @match %>
 
-        <div class="mt-6 text-center">
-            <%= link_to matches_path, class: "lol-btn py-2 px-4 flex items-center justify-center mx-auto" do %>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Retour à la liste
-            <% end %>
+            <div class="mt-8 pt-6">
+                <div class="flex flex-col md:flex-row gap-4 justify-center">
+                    <!-- Bouton voir détails -->
+                    <%= link_to @match, class: "lol-btn py-3 px-6 flex items-center justify-center group transition-all duration-300" do %>
+                    <svg class="h-5 w-5 mr-2 text-[#c8aa6e] group-hover:text-[#f0e6d2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    <span>Voir détails du match</span>
+                    <% end %>
+
+                    <!-- Bouton supprimer -->
+                    <%= button_to @match, 
+              method: :delete, 
+              class: "lol-btn bg-[#3a1518] hover:bg-[#5e2129] border-[#5e2129] py-3 px-6 flex items-center justify-center group transition-all duration-300", 
+              form: { 
+                data: { 
+                  turbo_confirm: "Êtes-vous sûr de vouloir supprimer ce match ? Cette action est irréversible et supprimera également les résultats associés." 
+                } 
+              } do %>
+                    <svg class="h-5 w-5 mr-2 text-[#e84057] group-hover:text-[#ff6b81]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
+                    </svg>
+                    <span>Supprimer ce match</span>
+                    <% end %>
+                </div>
+            </div>
         </div>
     </div>
 </div>
