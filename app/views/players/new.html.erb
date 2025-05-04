@@ -1,7 +1,36 @@
-<% content_for :title, "New player" %>
+<% content_for :title, "Nouveau joueur" %>
 
-<div class="md:w-2/3 w-full">
-    <%= render "form", player: @player %>
-
-    <%= link_to "Retour aux joueurs", players_path, class: "lol-btn" %>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Formulaire -->
+  <div class="lol-container mb-8">
+    <div class="lol-header p-3 relative">
+      <!-- Titre centré -->
+      <h2 class="text-xl font-semibold text-center">Ajouter un joueur</h2>
+      
+      <!-- Bouton retour positionné de manière absolue -->
+      <div class="absolute left-3 top-1/2 transform -translate-y-1/2">
+        <%= link_to players_path, class: "lol-btn py-2 px-3 text-sm flex items-center justify-center" do %>
+          <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Retour
+        <% end %>
+      </div>
+    </div>
+    
+    <div class="p-6">
+      <!-- Section d'information -->
+      <div class="bg-[#091428] bg-opacity-70 border border-[#3c3c41] rounded-md p-4 mb-6">
+        <div class="flex items-center text-[#c8aa6e]">
+          <svg class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4M12 8h.01" />
+          </svg>
+          <span class="text-sm">Ajoutez un joueur à votre tournoi. Vous pourrez l'assigner à une équipe maintenant ou plus tard.</span>
+        </div>
+      </div>
+      
+      <%= render "form", player: @player %>
+    </div>
+  </div>
 </div>
