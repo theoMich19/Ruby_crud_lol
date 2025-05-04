@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_23_101057) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_23_101058) do
+  create_table "match_players", force: :cascade do |t|
+    t.integer "match_id", null: false
+    t.integer "player_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_match_players_on_match_id"
+    t.index ["player_id"], name: "index_match_players_on_player_id"
+  end
+
   create_table "matches", force: :cascade do |t|
     t.integer "first_team_id", null: false
     t.integer "second_team_id", null: false
@@ -47,6 +56,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_23_101057) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "match_players", "matches"
+  add_foreign_key "match_players", "players"
   add_foreign_key "matches", "teams", column: "first_team_id"
   add_foreign_key "matches", "teams", column: "second_team_id"
   add_foreign_key "players", "teams"

@@ -61,11 +61,16 @@
             <div class="flex flex-col md:flex-row justify-center items-center bg-black bg-opacity-40 p-6 rounded-lg border border-gray-700">
                 <!-- Équipe 1 -->
                 <div class="flex-1 text-center">
-                    <div class="text-xl font-bold mb-1"><%= @match.first_team.name %></div>
+                    <div class="text-xl font-bold mb-1">
+                        <%= link_to @match.first_team.name, team_path(@match.first_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                    </div>
                     <div class="text-sm text-gray-400 mt-3">
                         <div class="font-medium text-amber-500 mb-1">Composition</div>
                         <% @match.first_team.players.each do |player| %>
-                        <div class="mb-1"><%= player.first_name %> "<span class="text-amber-500"><%= player.formatted_role %></span>" <%= player.last_name %></div>
+                        <div class="mb-1">
+                            <%= link_to "#{player.first_name} #{player.last_name}", player_path(player), class: "hover:text-[#c8aa6e] transition-colors" %>
+                            <span class="text-amber-500">"<%= player.formatted_role %>"</span>
+                        </div>
                         <% end %>
                     </div>
                 </div>
@@ -77,11 +82,16 @@
 
                 <!-- Équipe 2 -->
                 <div class="flex-1 text-center">
-                    <div class="text-xl font-bold mb-1"><%= @match.second_team.name %></div>
+                    <div class="text-xl font-bold mb-1">
+                        <%= link_to @match.second_team.name, team_path(@match.second_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                    </div>
                     <div class="text-sm text-gray-400 mt-3">
                         <div class="font-medium text-amber-500 mb-1">Composition</div>
                         <% @match.second_team.players.each do |player| %>
-                        <div class="mb-1"><%= player.first_name %> "<span class="text-amber-500"><%= player.formatted_role %></span>" <%= player.last_name %></div>
+                        <div class="mb-1">
+                            <%= link_to "#{player.first_name} #{player.last_name}", player_path(player), class: "hover:text-[#c8aa6e] transition-colors" %>
+                            <span class="text-amber-500">"<%= player.formatted_role %>"</span>
+                        </div>
                         <% end %>
                     </div>
                 </div>
@@ -110,7 +120,9 @@
         <div class="flex flex-col md:flex-row justify-center items-center bg-black bg-opacity-40 p-6 rounded-lg border border-gray-700 mb-6">
             <!-- Score Équipe 1 -->
             <div class="flex-1 text-center">
-                <div class="text-xl font-bold mb-2"><%= @match.first_team.name %></div>
+                <div class="text-xl font-bold mb-2">
+                    <%= link_to @match.first_team.name, team_path(@match.first_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                </div>
                 <div class="text-6xl font-bold text-amber-400 mb-2"><%= @match.result.first_team_score %></div>
             </div>
 
@@ -118,10 +130,14 @@
             <div class="my-6 md:my-0 md:mx-8 text-center">
                 <% if @match.result.first_team_score > @match.result.second_team_score %>
                 <div class="text-green-500 font-medium mb-2">Victoire de</div>
-                <div class="text-xl font-bold text-white mb-2"><%= @match.first_team.name %></div>
+                <div class="text-xl font-bold text-white mb-2">
+                    <%= link_to @match.first_team.name, team_path(@match.first_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                </div>
                 <% elsif @match.result.second_team_score > @match.result.first_team_score %>
                 <div class="text-green-500 font-medium mb-2">Victoire de</div>
-                <div class="text-xl font-bold text-white mb-2"><%= @match.second_team.name %></div>
+                <div class="text-xl font-bold text-white mb-2">
+                    <%= link_to @match.second_team.name, team_path(@match.second_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                </div>
                 <% else %>
                 <div class="text-yellow-500 font-medium mb-2">Match nul</div>
                 <% end %>
@@ -129,7 +145,9 @@
 
             <!-- Score Équipe 2 -->
             <div class="flex-1 text-center">
-                <div class="text-xl font-bold mb-2"><%= @match.second_team.name %></div>
+                <div class="text-xl font-bold mb-2">
+                    <%= link_to @match.second_team.name, team_path(@match.second_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                </div>
                 <div class="text-6xl font-bold text-amber-400 mb-2"><%= @match.result.second_team_score %></div>
             </div>
         </div>

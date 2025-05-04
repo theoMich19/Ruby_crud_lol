@@ -17,8 +17,11 @@
                 <% @recent_matches.select { |m| m.result.present? }.take(4).each do |match| %>
                 <div class="border-b border-gray-700 pb-3 last:border-0">
                     <div class="flex justify-between items-center mb-1">
-                        <div class="font-bold text-lg"><%= match.first_team.name %></div>
+                        <div class="font-bold text-lg">
+                            <%= link_to match.first_team.name, team_path(match.first_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                        </div>
                         <div class="flex items-center">
+                            <%= link_to match_path(match), class: "hover:text-[#c8aa6e] transition-colors" do %>
                             <span class="text-xl font-bold mx-2">
                                 <%= match.result.first_team_score %>
                             </span>
@@ -26,8 +29,11 @@
                             <span class="text-xl font-bold mx-2">
                                 <%= match.result.second_team_score %>
                             </span>
+                            <% end %>
                         </div>
-                        <div class="font-bold text-lg"><%= match.second_team.name %></div>
+                        <div class="font-bold text-lg">
+                            <%= link_to match.second_team.name, team_path(match.second_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                        </div>
                     </div>
                     <div class="text-center text-sm text-gray-400">
                         <% if match.date.present? %>
@@ -92,7 +98,9 @@
             %>
                     <tr class="<%= index % 2 == 0 ? 'bg-black bg-opacity-20' : '' %>">
                         <td class="p-2 text-center"><%= index + 1 %></td>
-                        <td class="p-2 font-medium"><%= team.name %></td>
+                        <td class="p-2 font-medium">
+                            <%= link_to team.name, team_path(team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                        </td>
                         <td class="p-2 text-center"><%= wins %></td>
                         <td class="p-2 text-center"><%= losses %></td>
                         <td class="p-2 text-center font-bold"><%= points %></td>
@@ -114,9 +122,13 @@
                 <% @upcoming_matches.each do |match| %>
                 <div class="border-b border-gray-700 pb-3 last:border-0">
                     <div class="flex justify-between items-center mb-1">
-                        <div class="font-bold text-lg"><%= match.first_team.name %></div>
+                        <div class="font-bold text-lg">
+                            <%= link_to match.first_team.name, team_path(match.first_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                        </div>
                         <div class="text-sm text-gray-400">VS</div>
-                        <div class="font-bold text-lg"><%= match.second_team.name %></div>
+                        <div class="font-bold text-lg">
+                            <%= link_to match.second_team.name, team_path(match.second_team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                        </div>
                     </div>
                     <div class="text-center text-amber-500 font-medium">
                         <% if match.date.present? %>
@@ -125,7 +137,7 @@
                         Non programmé
                         <% end %>
                     </div>
-                    
+
                 </div>
                 <% end %>
             </div>
@@ -179,7 +191,9 @@
             <% Team.all.each do |team| %>
             <div class="border border-gray-700 bg-black bg-opacity-40 rounded">
                 <div class="p-3 border-b border-gray-700 flex justify-between items-center">
-                    <h3 class="text-lg font-bold"><%= team.name %></h3>
+                    <h3 class="text-lg font-bold">
+                        <%= link_to team.name, team_path(team), class: "hover:text-[#c8aa6e] transition-colors" %>
+                    </h3>
                     <span class="text-xs border border-amber-800 rounded-full px-2 py-1 bg-black bg-opacity-50">
                         <%= team.players.count %>/5 Joueurs
                     </span>
@@ -189,7 +203,9 @@
                     <ul class="divide-y divide-gray-700">
                         <% team.players.each do |player| %>
                         <li class="py-2 flex justify-between">
-                            <span><%= player.first_name %> <%= player.last_name %></span>
+                            <span>
+                                <%= link_to "#{player.first_name} #{player.last_name}", player_path(player), class: "hover:text-[#c8aa6e] transition-colors" %>
+                            </span>
                             <span class="text-amber-500"><%= player.formatted_role %></span>
                         </li>
                         <% end %>

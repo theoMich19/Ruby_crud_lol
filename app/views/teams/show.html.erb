@@ -63,8 +63,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <% if @team.players.any? %>
             <% @team.players.each do |player| %>
-            <div class="lol-container p-4 ">
-                <h3 class="text-lg font-semibold mb-2"><%= player.first_name %> <%= player.last_name %></h3>
+            <div class="lol-container p-4">
+                <h3 class="text-lg font-semibold mb-2">
+                    <%= link_to "#{player.first_name} #{player.last_name}", player_path(player), class: "hover:text-[#c8aa6e] transition-colors" %>
+                </h3>
                 <p class="text-sm text-gray-300 mb-3">Rôle : <%= player.formatted_role %></p>
                 <div class="flex space-x-2">
                     <%= link_to "Modifier", edit_player_path(player),  class: "lol-btn" %>

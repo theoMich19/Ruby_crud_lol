@@ -54,7 +54,7 @@ class PlayersController < ApplicationController
     @player = Player.new(player_params)
 
     if @player.save
-      redirect_to @player, notice: "Player was successfully created."
+      redirect_to @player, notice: "Le joueur a été créé avec succès."
     else
       render :new, status: :unprocessable_entity
     end
@@ -70,7 +70,7 @@ class PlayersController < ApplicationController
     end
 
     if @player.update(player_params)
-      redirect_to @player, notice: "Player was successfully updated."
+      redirect_to @player, notice: "Le joueur a été modifié avec succès."
     else
       render :edit, status: :unprocessable_entity
     end
